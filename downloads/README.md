@@ -15,4 +15,4 @@ A simple user downloads plugin that allows **_back-end_** users to upload files 
 - test.txt
 
 ### Case #1:
-Back-end user 'ADMIN' uploads 'test.txt' via the User Downloads Plugin, and assigns the file to front-end user 'A' and front-end user 'B'. Front-end user 'A' logins to the dashboard and accesses the downloads component, the file 'test.txt' is visible to 'A', the same case is for front-end user 'B', however it is not visible to front-end user 'C'.
+Back-end user *ADMIN* uploads *test.txt* via the User Downloads Plugin, and assigns the file to front-end user *A* and front-end user *B*. Front-end user *A* logins to the dashboard and accesses the downloads component, the file *test.txt* is visible to *A*, the same case is for front-end user *B*, however it is not visible to front-end user *C*.
