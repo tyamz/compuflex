@@ -1,0 +1,6 @@
+{% for key, download in __SELF__.downloads %}
+	{% set key = key + 1 %}
+ 	<a href="{{ download.file.path }}">{{ key }}.) {{ download.file_name }}</a>
+	<br>
+{% endfor %}
+

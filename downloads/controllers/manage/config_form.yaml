@@ -1,0 +1,10 @@
+name: Manage
+form: $/compuflex/downloads/models/file/fields.yaml
+modelClass: Compuflex\Downloads\Models\File
+defaultRedirect: compuflex/downloads/manage
+create:
+    redirect: 'compuflex/downloads/manage/update/:id'
+    redirectClose: compuflex/downloads/manage
+update:
+    redirect: compuflex/downloads/manage
+    redirectClose: compuflex/downloads/manage

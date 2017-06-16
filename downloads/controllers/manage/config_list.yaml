@@ -1,0 +1,11 @@
+list: $/compuflex/downloads/models/file/columns.yaml
+modelClass: Compuflex\Downloads\Models\File
+title: Manage
+noRecordsMessage: 'backend::lang.list.no_records'
+showSetup: true
+showCheckboxes: true
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: 'backend::lang.list.search_prompt'
+recordUrl: 'compuflex/downloads/manage/update/:id'

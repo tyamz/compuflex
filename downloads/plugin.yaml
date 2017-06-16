@@ -1,0 +1,22 @@
+plugin:
+    name: 'compuflex.downloads::lang.plugin.name'
+    description: 'compuflex.downloads::lang.plugin.description'
+    author: 'Thomas Yamakaitis (for The Compuflex Corporation - © 2017 The Compuflex Inc. All rights reserved.'
+    icon: oc-icon-download
+    homepage: ''
+navigation:
+    main-menu-item.downloads:
+        label: 'compuflex.downloads::lang.main-menu-items.downloads'
+        url: compuflex/downloads/manage
+        icon: icon-download
+        sideMenu:
+            side-menu-item.manage:
+                label: 'compuflex.downloads::lang.side-menu-item.manage'
+                url: compuflex/downloads/manage
+                icon: icon-file
+                permissions:
+                    - manage_files
+permissions:
+    manage_files:
+        tab: 'compuflex.downloads::lang.plugin.description'
+        label: 'compuflex.downloads::lang.file.manage'

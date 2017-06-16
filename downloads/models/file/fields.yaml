@@ -1,0 +1,24 @@
+fields:
+    file_name:
+        label: 'compuflex.downloads::lang.file.name'
+        oc.commentPosition: ''
+        span: auto
+        type: text
+        comment: 'This should be a descriptive name, not the actual file name. For example, it should be "Timesheets June 2017", not "timesheets_june_2017.xlsx"'
+    file:
+        label: 'compuflex.downloads::lang.file.path'
+        mode: file
+        useCaption: true
+        thumbOptions:
+            mode: crop
+            extension: auto
+        span: auto
+        required: 1
+        type: fileupload
+    user:
+        label: 'compuflex.downloads::lang.File.user'
+        oc.commentPosition: ''
+        nameFrom: name
+        descriptionFrom: description
+        span: auto
+        type: relation
