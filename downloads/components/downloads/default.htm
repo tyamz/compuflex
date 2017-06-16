@@ -1,6 +1,17 @@
+<div class="table">
+		<div class="tr">
+			<div class="th">
+				#ID
+			</div>
+			<div class="th">
+				File Name
+			</div>
+		</div>
 {% for key, download in __SELF__.downloads %}
 	{% set key = key + 1 %}
- 	<a href="{{ download.file.path }}">{{ key }}.) {{ download.file_name }}</a>
-	<br>
+	<div class="tr">
+		<a href="{{ download.file.path }}">{{ download.file_name }}</a>
+	</div>
 {% endfor %}
+</div>
 
