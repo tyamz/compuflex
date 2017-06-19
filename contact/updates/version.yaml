@@ -1,0 +1,23 @@
+1.0.1:
+    - 'Initialize plugin.'
+1.0.2:
+    - 'Created table compuflex_contact_messages'
+    - builder_table_create_compuflex_contact_messages.php
+1.0.3:
+    - 'Updated table compuflex_contact_messages'
+    - builder_table_update_compuflex_contact_messages.php
+1.0.4:
+    - 'Drop table compuflex_contactus_groups'
+    - builder_table_delete_compuflex_contactus_groups.php
+1.0.5:
+    - 'Drop table compuflex_contactus_messages'
+    - builder_table_delete_compuflex_contactus_messages.php
+1.0.6:
+    - 'Drop table compuflex_contactus_users_groups'
+    - builder_table_delete_compuflex_contactus_users_groups.php
+1.0.7:
+    - 'Updated table compuflex_contact_messages'
+    - builder_table_update_compuflex_contact_messages_2.php
+1.0.8:
+    - 'Updated table compuflex_contact_messages'
+    - builder_table_update_compuflex_contact_messages_3.php

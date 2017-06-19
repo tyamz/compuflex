@@ -1,0 +1,37 @@
+columns:
+    id:
+        label: id
+        type: number
+        searchable: true
+        sortable: true
+    name:
+        label: name
+        type: text
+        searchable: true
+        sortable: true
+    permissions:
+        label: permissions
+        type: text
+        invisible: true
+    created_at:
+        label: created_at
+        type: datetime
+        invisible: true
+    updated_at:
+        label: updated_at
+        type: datetime
+        invisible: true
+    code:
+        label: code
+        type: text
+        invisible: true
+    description:
+        label: description
+        type: text
+        searchable: true
+        invisible: false
+        sortable: true
+    is_new_user_default:
+        label: is_new_user_default
+        type: text
+        invisible: true

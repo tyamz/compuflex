@@ -1,0 +1,20 @@
+plugin:
+    name: 'compuflex.contact::lang.plugin.name'
+    description: 'compuflex.contact::lang.plugin.description'
+    author: 'Thomas Yamakaitis'
+    icon: oc-icon-at
+    homepage: 'http://compuflexcorp.com'
+navigation:
+    contact:
+        label: 'compuflex.contact::lang.plugin.name'
+        url: compuflex/contact/messages
+        icon: icon-at
+        sideMenu:
+            messages:
+                label: 'compuflex.contact::lang.menu.messages'
+                url: compuflex/contact/messages
+                icon: icon-inbox
+            groups:
+                label: 'compuflex.contact::lang.menu.groups'
+                url: compuflex/contact/groups
+                icon: icon-users

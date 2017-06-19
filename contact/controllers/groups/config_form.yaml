@@ -1,0 +1,10 @@
+name: Groups
+form: $/compuflex/contact/models/group/fields.yaml
+modelClass: Compuflex\Contact\Models\Group
+defaultRedirect: compuflex/contact/groups
+create:
+    redirect: 'compuflex/contact/groups/update/:id'
+    redirectClose: compuflex/contact/groups
+update:
+    redirect: compuflex/contact/groups
+    redirectClose: compuflex/contact/groups

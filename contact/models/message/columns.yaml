@@ -1,0 +1,32 @@
+columns:
+    id:
+        label: 'compuflex.contact::lang.message.id'
+        type: number
+        searchable: true
+        sortable: true
+    sender_name:
+        label: 'compuflex.contact::lang.message.sender_name'
+        type: text
+        searchable: true
+        sortable: true
+    sender_email:
+        label: 'compuflex.contact::lang.message.sender_email'
+        type: text
+        searchable: true
+        sortable: true
+    subject:
+        label: 'compuflex.contact::lang.message.subject'
+        type: text
+        searchable: true
+        sortable: true
+    message:
+        label: 'compuflex.contact::lang.message.content'
+        type: text
+        searchable: true
+        sortable: true
+        cssClass: overflow-column
+    created_at:
+        label: 'compuflex.contact::lang.message.date_sent'
+        type: date
+        searchable: true
+        sortable: true

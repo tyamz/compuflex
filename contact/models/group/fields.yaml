@@ -1,0 +1,12 @@
+fields:
+    name:
+        label: 'compuflex.contact::lang.group.name'
+        oc.commentPosition: ''
+        span: auto
+        type: text
+    description:
+        label: 'compuflex.contact::lang.group.desc'
+        span: full
+        size: small
+        oc.commentPosition: ''
+        type: textarea
