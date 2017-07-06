@@ -1,0 +1,14 @@
+fields:
+    question:
+        label: 'compuflex.faqs::lang.question.text'
+        span: full
+        size: large
+        oc.commentPosition: ''
+        type: textarea
+    company:
+        label: Company
+        span: auto
+        oc.commentPosition: ''
+        nameFrom: name
+        descriptionFrom: description
+        type: relation

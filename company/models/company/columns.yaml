@@ -1,0 +1,16 @@
+columns:
+    id:
+        label: 'compuflex.company::lang.company.id'
+        type: number
+        searchable: true
+        sortable: true
+    name:
+        label: 'compuflex.company::lang.company.name'
+        type: text
+        searchable: true
+        sortable: true
+    description:
+        label: 'compuflex.company::lang.company.desc'
+        type: text
+        searchable: true
+        sortable: true

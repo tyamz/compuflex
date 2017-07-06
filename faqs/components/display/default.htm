@@ -1,0 +1,10 @@
+{% for q in questions %}
+<h3 class="blue bold">{{ q.question }}</h3>
+  <ul>
+    {% for a in answers %}
+      {% if a.question_id == q.id %}
+        <li>{{ a.answer }}</li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+{% endfor %}

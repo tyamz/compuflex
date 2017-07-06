@@ -1,0 +1,11 @@
+columns:
+    question:
+        label: 'compuflex.faqs::lang.question.text'
+        type: text
+        searchable: true
+        sortable: true
+    created_at:
+        label: 'compuflex.faqs::lang.created'
+        type: datetime
+        searchable: true
+        sortable: true

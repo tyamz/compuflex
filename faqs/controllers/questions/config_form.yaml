@@ -1,0 +1,10 @@
+name: Questions
+form: $/compuflex/faqs/models/question/fields.yaml
+modelClass: Compuflex\Faqs\Models\Question
+defaultRedirect: compuflex/faqs/questions
+create:
+    redirect: 'compuflex/faqs/questions/update/:id'
+    redirectClose: compuflex/faqs/questions
+update:
+    redirect: compuflex/faqs/questions
+    redirectClose: compuflex/faqs/questions

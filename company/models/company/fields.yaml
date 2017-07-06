@@ -1,0 +1,12 @@
+fields:
+    name:
+        label: 'compuflex.company::lang.company.name'
+        oc.commentPosition: ''
+        span: auto
+        type: text
+    description:
+        label: 'compuflex.company::lang.company.desc'
+        span: full
+        size: small
+        oc.commentPosition: ''
+        type: textarea

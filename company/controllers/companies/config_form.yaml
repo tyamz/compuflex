@@ -1,0 +1,10 @@
+name: Companies
+form: $/compuflex/company/models/company/fields.yaml
+modelClass: Compuflex\Company\Models\Company
+defaultRedirect: compuflex/company/companies
+create:
+    redirect: 'compuflex/company/companies/update/:id'
+    redirectClose: compuflex/company/companies
+update:
+    redirect: compuflex/company/companies
+    redirectClose: compuflex/company/companies

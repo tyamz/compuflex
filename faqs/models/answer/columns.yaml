@@ -1,0 +1,13 @@
+columns:
+    answer:
+        label: 'compuflex.faqs::lang.answer.text'
+        type: text
+        searchable: true
+        sortable: true
+    question:
+        label: 'compuflex.faqs::lang.answer.question'
+        type: text
+        searchable: true
+        sortable: true
+        select: question
+        relation: question

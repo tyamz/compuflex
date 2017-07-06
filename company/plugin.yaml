@@ -1,0 +1,17 @@
+plugin:
+    name: 'compuflex.company::lang.plugin.name'
+    description: 'compuflex.company::lang.plugin.description'
+    author: 'Thomas Yamakaitis'
+    icon: oc-icon-building
+    homepage: ''
+navigation:
+    company:
+        label: 'compuflex.company::lang.menu.companies'
+        url: compuflex/company/companies
+        icon: icon-building
+        permissions:
+            - companies
+permissions:
+    companies:
+        tab: 'compuflex.company::lang.plugin.name'
+        label: 'compuflex.company::lang.permission.companies'
