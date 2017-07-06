@@ -8,7 +8,16 @@
 				File Name
 			</div>
 			<div class="th">
+				Actual File Name
+			</div>
+			<div class="th">
 				File Description
+			</div>
+			<div class="th">
+				File Size
+			</div>
+			<div class="th">
+				Link
 			</div>
 		</div>
 {% for key, download in __SELF__.downloads %}
@@ -20,8 +29,17 @@
 		<div class="td">
 			<a href="{{ download.file.path }}">{{ download.file_name }}</a>
 		</div>
+		<div class="td">
+			<a href="{{ download.file.path }}">{{ download.file.file_name }}</a>
+		</div>
 		<div class="td overflow">
 			{{ download.file_desc }}
+		</div>
+		<div class="td overflow">
+			{{ (download.file.file_size / 1000)|round }} KB
+		</div>
+		<div class="td overflow">
+			<a href="{{ download.file.path }}"><i class="fa fa-download" aria-hidden="true"></i> Click Here to Download the file</a>
 		</div>
 	</div>
 {% endfor %}

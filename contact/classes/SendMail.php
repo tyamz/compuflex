@@ -7,27 +7,17 @@
 
     class SendMail {
 
-        public static function sendNotification($properties, $post, $messageContent) {
+		public static function sendNotification($post, $emails)
+		{
+			Mail::send('compuflex.contact::mail.message', $post, function($message) use ($emails, $post) {
+				
+				$message->to($emails);
+				$message->from('mail@compuflexcorp.com', 'Compuflex Mail');
+				$message->subject($post['subject']);
+				$message->replyTo($post['email']);
 
-            if(is_array($properties['mail_recipients'])) {
-
-                # CUSTOM TEMPLATE
-                $template = isset($properties['mail_template']) && $properties['mail_template'] != '' && MailTemplate::where('code', $properties['mail_template'])->count() ? $properties['mail_template'] : 'compuflex.contact::mail.notification';
-
-                Mail::sendTo($properties['mail_recipients'], $template, [
-                    'sender_name'   => $messageContent->sender_name,
-                    'sender_email' => $messageContent->sender_email,
-                    'message'   => $messageContent->message,
-                    'date' => $messageContent->created_at
-                ], function($message) use ($properties, $files) {
-
-                    $message->subject($properties['mail_subject']);
-
-                });
-
-            }
-
-        }
+			});
+		}
 
         public static function sendAutoResponse($properties, $post) {
 

@@ -1,7 +1,6 @@
 fields:
     file_name:
         label: 'compuflex.downloads::lang.file.name'
-        oc.commentPosition: ''
         span: auto
         type: text
         comment: 'This should be a descriptive name, not the actual file name. For example, it should be "Timesheets June 2017", not "timesheets_june_2017.xlsx"'
@@ -15,8 +14,14 @@ fields:
         span: auto
         required: 1
         type: fileupload
-    user:
-        label: 'compuflex.downloads::lang.File.user'
+    file_desc:
+        label: 'compuflex.downloads::lang.file.desc'
+        size: small
+        oc.commentPosition: ''
+        span: full
+        type: textarea
+    companies:
+        label: 'compuflex.downloads::lang.file.company'
         oc.commentPosition: ''
         nameFrom: name
         descriptionFrom: description

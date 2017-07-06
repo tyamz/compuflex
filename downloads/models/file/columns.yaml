@@ -4,20 +4,13 @@ columns:
         type: text
         searchable: true
         sortable: true
-    full_name:
-        label: 'compuflex.downloads::lang.file.username'
+    name:
+        label: 'compuflex.downloads::lang.file.company'
         type: text
         searchable: true
         sortable: true
         select: name
-        relation: user
-    email:
-        label: 'compuflex.downloads::lang.file.email'
-        type: text
-        searchable: true
-        sortable: true
-        select: email
-        relation: user
+        relation: companies
     file:
         label: 'compuflex.downloads::lang.file.path'
         type: text

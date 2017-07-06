@@ -7,16 +7,13 @@
         'name' => 'Filename',
         'path' => 'File',
         'manage' => 'Ability to Manage Files',
-        'username' => 'Full Name',
-        'email' => 'Email Address',
+        'desc' => 'File Description',
+        'company' => 'Specified Companie(s)',
     ],
     'main-menu-items' => [
         'downloads' => 'Downloads',
     ],
     'side-menu-item' => [
         'manage' => 'File Manager',
-    ],
-    'File' => [
-        'user' => 'Specified User',
     ],
 ];

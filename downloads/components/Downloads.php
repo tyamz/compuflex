@@ -2,7 +2,8 @@
 
 use Auth;
 use Cms\Classes\ComponentBase;
-use Rainlab\User\Models\User;
+use Compuflex\Company\Models\Company;
+use Illuminate\Support\Facades\DB as Db;
 
 class Downloads extends ComponentBase
 {
@@ -30,14 +31,14 @@ class Downloads extends ComponentBase
         ];
     }
 
-    public function onRender() 
+    public function onRender()
     {
-       
+
     }
-    
+
     function onInit()
     {
-        
+
     }
 
     public function onRun()
@@ -46,7 +47,8 @@ class Downloads extends ComponentBase
 			echo 'Oops! Redirecting to Login!';
 		} else {
 			$user = Auth::getUser()->id;
-			$this->downloads = User::find($user)->file;
+      $company = Db::table('users')->select('company_id')->where('id', $user)->get();
+			$this->downloads = Company::find($company[0]->company_id)->file;
 		}
     }
 }

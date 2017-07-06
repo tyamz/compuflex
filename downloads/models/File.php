@@ -29,12 +29,10 @@ class File extends FileBase
 
 
     public $attachOne = [
-            'file' => ['System\Models\File', 
-				'key' => 'id']
+      'file' => ['System\Models\File', 'key' => 'id']
     ];
-	
-	public $belongsToMany = [
-			'user' => ['RainLab\User\Models\User']
-	];
 
+    public $belongsToMany = [
+      'companies' => ['Compuflex\Company\Models\Company', 'table' => 'company_file']
+    ];
 }
