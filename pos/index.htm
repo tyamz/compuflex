@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Point of Sale (PoS)</title>
+    <meta charset="utf-8">
+    <!-- BootStrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Font Awesome CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link href="/css/styles.css" rel="stylesheet" type="text/css">
+
+    <script>
+      var cart = [];
+    </script>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="/js/script.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top navbar-collapse" id="top">
+     <div class="container-fluid">
+       <div class="navbar-header">
+         <a class="navbar-brand" href="#">MockPoS</a>
+       </div>
+       <ul class="nav navbar-nav">
+         <li onClick="openCart()" class="active" id="cart-button"><a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart</a></li>
+         <li onClick="openTrans()" id="trans-button"><a href="#"><i class="fa fa-exchange" aria-hidden="true"></i> Trans</a></li>
+       </ul>
+       <ul class="nav navbar-nav navbar-right">
+         <li><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i> <span id="time"></span></a></li>
+         <li onClick="changeUser()"><a href="#"><i class="fa fa-user" aria-hidden="true"></i> <span id="user">Tommy</span></a></li>
+       </ul>
+     </div>
+    </nav>
+    <nav class="navbar navbar-default navbar-fixed-bottom" id="bottom">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav navbar-header">
+          <li class="active"><a class="navbar-total" href="#">Total: $<span id="total">0.00</span></a></li>
+        </ul>
+        <form class="navbar-form navbar-left" id="paid">
+          <div class="form-group">
+            Paid: $ <input type="text" class="form-control input" id="paidInput">
+          </div>
+        </form>
+        <ul class="nav navbar-nav">
+          <li id="change"><a class="navbar-total" href="#">Change: $<span id="result">0.00</span></a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li onClick="pay()" id="pay"><a href="#"><i class="fa fa-money" aria-hidden="true"></i> Pay</a></li>
+          <li onClick="process()" id="process"><a href="#"><i class="fa fa-cogs" aria-hidden="true"></i> Process</a></li>
+        </ul>
+      </div>
+    </nav>
+    <!-- Modal -->
+    <div class="modal fade" id="moneyOwed" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Error!</h4>
+          </div>
+          <div class="modal-body">
+            <p>Oops, it looks like money is owed. "Total" is greater than "Paid".</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="container-fluid" id="cart-content">
+      <button type="button" class="btn btn-success" onClick="add()"><i class="fa fa-plus" aria-hidden="true"></i> Add</button>
+      <button type="button" class="btn btn-warning" onClick="remove()"><i class="fa fa-minus" aria-hidden="true"></i> Remove</button>
+      <button type="button" class="btn btn-danger" onClick="clearAll()"><i class="fa fa-trash-o" aria-hidden="true"></i> Clear</button>
+      <br /><br />
+      <table class="table bordered" id="cart">
+        <thead>
+          <tr>
+            <th><i class="fa fa-check" aria-hidden="true"></i> Select</th>
+            <th><i class="fa fa-info-circle" aria-hidden="true"></i> Description</th>
+            <th><i class="fa fa-balance-scale" aria-hidden="true"></i> Price</th>
+            <th><i class="fa fa-cubes" aria-hidden="true"></i> Quantity</th>
+            <th><i class="fa fa-area-chart" aria-hidden="true"></i> Total</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+      <div class="alert alert-success" id="trans-complete">
+        <strong>Success!</strong> The transaction is complete.
+      </div>
+    </div>
+    <div class="container-fluid" id="trans-content">
+      <h1>Transactions</h1>
+      <table class="table bordered" id="trans">
+        <thead>
+          <tr>
+            <th><i class="fa fa-clock-o" aria-hidden="true"></i> Stamp</th>
+            <th><i class="fa fa-user" aria-hidden="true"></i> User</th>
+            <th><i class="fa fa-usd" aria-hidden="true"></i> Total</th>
+            <th><i class="fa fa-money" aria-hidden="true"></i> Paid</th>
+            <th><i class="fa fa-balance-scale" aria-hidden="true"></i> Change</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

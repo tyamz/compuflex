@@ -1,0 +1,28 @@
+body {
+  padding-top: 65px;
+}
+.white-bg {
+  background: #fff;
+}
+
+.bordered {
+  border: 1px solid #ddd;
+}
+
+#paid, #process, #change, #trans-content, #trans-complete {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+  body {
+    padding-top: 250px;
+  }
+}
+
+/* Override BootStrap */
+@media (min-width: 768px) {
+  .navbar > .container .navbar-total,
+  .navbar > .container-fluid .navbar-total {
+    margin-left: -15px;
+  }
+}
