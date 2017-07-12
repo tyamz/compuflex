@@ -8,4 +8,4 @@ This repository is a small sample of some of the work I have done at The Compufl
  - [Compuflex Website - Plugins (PHP)](/Compuflex%20Website%20-%20Plugins%20(PHP)) ~ Plugins for OctoberCMS / Laravel
 
 ## Want to see more?
-[Check out my portfolio...](https://github.com/t_yamz)
+[Check out my portfolio...](https://github.com/tyamz/portfolio)
