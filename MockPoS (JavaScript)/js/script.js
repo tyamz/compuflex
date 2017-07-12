@@ -94,6 +94,11 @@ function clearAll() {
     document.getElementById("result").innerHTML = 0.00;
     document.getElementById("total").innerHTML = 0.00;
     document.getElementById("paidInput").value = 0.00;
+    $("#paid").hide();
+    $("#change").hide();
+    $("#pay").fadeIn(1000);
+    $("#process").hide();
+    $("#cancel").hide();
 }
 
 // Function to check if one of the item(s) has already been added to the cart, if so, increment instead of create new cart item.
@@ -167,6 +172,7 @@ function pay() {
     $("#change").fadeIn(1000);
     $("#pay").hide();
     $("#process").fadeIn(1000);
+    $("#cancel").fadeIn(1000);
 }
 
 function changeInput() {

@@ -4,23 +4,24 @@
     <title>Point of Sale (PoS)</title>
     <meta charset="utf-8">
     <!-- BootStrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 
     <!-- Font Awesome CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <!-- Custom CSS -->
     <link href="/css/styles.css" rel="stylesheet" type="text/css">
+    <link href="/css/properties.css" rel="stylesheet" type="text/css">
 
     <script>
       var cart = [];
     </script>
 
     <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/js/jquery-3.2.1.min.js"></script>
 
     <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
 
     <!-- Custom JS -->
     <script src="/js/script.js"></script>
@@ -55,31 +56,12 @@
           <li id="change"><a class="navbar-total" href="#">Change: $<span id="result">0.00</span></a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li onClick="pay()" id="pay"><a href="#"><i class="fa fa-money" aria-hidden="true"></i> Pay</a></li>
-          <li onClick="process()" id="process"><a href="#"><i class="fa fa-cogs" aria-hidden="true"></i> Process</a></li>
+          <li onClick="pay()" id="pay"><a href="#" class="green-bg"><i class="fa fa-money" aria-hidden="true"></i> Pay</a></li>
+          <li onClick="process()" id="process"><a href="#" class="yellow-bg"><i class="fa fa-cogs" aria-hidden="true"></i> Process</a></li>
+          <li onClick="clearAll()" id="cancel"><a href="#" class="red-bg"><i class="fa fa-ban" aria-hidden="true"></i> Cancel</a></li>
         </ul>
       </div>
     </nav>
-    <!-- Modal -->
-    <div class="modal fade" id="moneyOwed" role="dialog">
-      <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Error!</h4>
-          </div>
-          <div class="modal-body">
-            <p>Oops, it looks like money is owed. "Total" is greater than "Paid".</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          </div>
-        </div>
-
-      </div>
-    </div>
     <div class="container-fluid" id="cart-content">
       <button type="button" class="btn btn-success" onClick="add()"><i class="fa fa-plus" aria-hidden="true"></i> Add</button>
       <button type="button" class="btn btn-warning" onClick="remove()"><i class="fa fa-minus" aria-hidden="true"></i> Remove</button>
@@ -113,7 +95,7 @@
             <th><i class="fa fa-clock-o" aria-hidden="true"></i> Stamp</th>
             <th><i class="fa fa-user" aria-hidden="true"></i> User</th>
             <th><i class="fa fa-usd" aria-hidden="true"></i> Total</th>
-            <th><i class="fa fa-money" aria-hidden="true"></i> Paid</th>
+            <th><i class="fa fa-money" aria-hidden="true"></i> Tendered</th>
             <th><i class="fa fa-balance-scale" aria-hidden="true"></i> Change</th>
           </tr>
         </thead>
