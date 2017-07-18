@@ -56,12 +56,12 @@ class Trans extends TableBuilder {
 	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		String plusLine = "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n";
-		sb.append(plusLine + String.format("+ %127s +\n", "Transaction ID#:" + trans.size()) + 
-				plusLine + String.format("+ %35s + %20s + %20s + %20s + %20s +\n", "Stamp", "User", "Total", "Tendered", "Change") + plusLine);
+		String plusLine = "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\r\n";
+		sb.append(plusLine + String.format("+ %151s +\r\n", "Transaction(s):" + trans.size()) + 
+				plusLine + String.format("+ %21s + %35s + %20s + %20s + %20s + %20s +\r\n", "Transaction ID#", "Stamp", "User", "Total", "Tendered", "Change") + plusLine);
 		
 		for(int i = 0; i < trans.size(); i++) {
-			sb.append(String.format("+ %35s + %20s + %20s + %20s + %20s +\n",dateFmt.format(trans.get(i).stamp),trans.get(i).getUser().getName(),fmt.format(trans.get(i).getTotal()),fmt.format(trans.get(i).getTendered()),fmt.format(trans.get(i).getChange())));
+			sb.append(String.format("+ %20d. + %35s + %20s + %20s + %20s + %20s +\r\n",trans.get(i).getId(),dateFmt.format(trans.get(i).stamp),trans.get(i).getUser().getName(),fmt.format(trans.get(i).getTotal()),fmt.format(trans.get(i).getTendered()),fmt.format(trans.get(i).getChange())));
 		}
 		
 		sb.append(plusLine);

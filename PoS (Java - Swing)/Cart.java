@@ -14,6 +14,7 @@ class Cart extends TableBuilder {
 	ArrayList<Integer> quantities = new ArrayList<>(); // Holds the quantities themselves
 	Object[] columns = {"Description","Price","Quantity","Total"}; // Column Identifiers
 	Double total;
+	int cartId = 1;
 	
 	/**
 	 * Default Cart Constructor
@@ -117,31 +118,39 @@ class Cart extends TableBuilder {
 		return total;
 	}
 	
+	/**
+	 * Get ID
+	 * @return ID of Cart / Transaction
+	 */
+	int getId() {
+		return this.cartId;
+	}
+	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		String plusLine = "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n";
-		sb.append(plusLine + String.format("+ %89s +\n", "Cart") +
-				plusLine + String.format("+ %20s + %20s + %20s + %20s +\n", "Description", "Price", "Quantity", "Total") + plusLine);
+		String plusLine = "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\r\n";
+		sb.append(plusLine + String.format("+ %89s +\r\n", "Cart ID#: " + this.cartId) +
+				plusLine + String.format("+ %20s + %20s + %20s + %20s +\r\n", "Description", "Price", "Quantity", "Total") + plusLine);
 		
 		for(int i = 0; i < products.size(); i++) {
-			sb.append(String.format("+ %20s + %20s + %20s + %20s +\n", products.get(i).getName(), fmt.format(products.get(i).getPrice()), quantities.get(i), fmt.format(products.get(i).getPrice() * quantities.get(i))));
+			sb.append(String.format("+ %20s + %20s + %20s + %20s +\r\n", products.get(i).getName(), fmt.format(products.get(i).getPrice()), quantities.get(i), fmt.format(products.get(i).getPrice() * quantities.get(i))));
 		}
 		
-		sb.append(plusLine);
+		sb.append(plusLine + String.format("+ %89s +\r\n", "Total: " + fmt.format(this.getTotal())) + plusLine);
 		return sb.toString();
 	}
 	
 	public String toString(String s) {
 		StringBuilder sb = new StringBuilder();
-		String plusLine = "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n";
-		sb.append(plusLine + String.format("+ %89s +\n", "(" + s + ") " + "Cart") +
-				plusLine + String.format("+ %20s + %20s + %20s + %20s +\n", "Description", "Price", "Quantity", "Total") + plusLine);
+		String plusLine = "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\r\n";
+		sb.append(plusLine + String.format("+ %89s +\r\n", "(" + s + ") " + "Cart ID#: " + this.cartId) +
+				plusLine + String.format("+ %20s + %20s + %20s + %20s +\r\n", "Description", "Price", "Quantity", "Total") + plusLine);
 		
 		for(int i = 0; i < products.size(); i++) {
-			sb.append(String.format("+ %20s + %20s + %20s + %20s +\n", products.get(i).getName(), fmt.format(products.get(i).getPrice()), quantities.get(i), fmt.format(products.get(i).getPrice() * quantities.get(i))));
+			sb.append(String.format("+ %20s + %20s + %20s + %20s +\r\n", products.get(i).getName(), fmt.format(products.get(i).getPrice()), quantities.get(i), fmt.format(products.get(i).getPrice() * quantities.get(i))));
 		}
 		
-		sb.append(plusLine + String.format("+ %89s +\n", "Total: " + fmt.format(this.getTotal())) + plusLine);
+		sb.append(plusLine + String.format("+ %89s +\r\n", "Total: " + fmt.format(this.getTotal())) + plusLine);
 		return sb.toString();
 	}
 }

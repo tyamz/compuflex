@@ -1,9 +1,18 @@
 package compuflexPosSwing;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -12,11 +21,20 @@ import java.util.Date;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import net.miginfocom.swing.MigLayout;
 
+/**
+ * Point of Sale (PoS) System
+ * This is a sample or "mock" Point of Sale System made at the Compuflex Corporation for testing purpose(s). This is designed to help test our
+ * screen management software.
+ * 
+ * @author Thomas Yamakaitis
+ * @version 1.1
+ */
 public class PoS {
 
 	private JFrame frame;
@@ -26,6 +44,8 @@ public class PoS {
 	private Double tendered;
 	private Double required;
 	private Date date;
+	private Boolean ctrlHeld;
+	private PrintWriter writer;
 
 	/**
 	 * Launch the application.
@@ -58,6 +78,8 @@ public class PoS {
 		frame.setBounds(100, 100, 793, 542);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		frame.setTitle("Point of Sale (PoS) - The Compuflex Corporation");
+		
 		Cart cart = new Cart();
 		Trans trans = new Trans();
 		DateFormat dateFmt = trans.getDateFormat();
@@ -68,6 +90,14 @@ public class PoS {
 		DecimalFormat fmt = cart.getNumFormat();
 		tendered = 0.00;
 		required = cart.getTotal() - tendered;
+		ctrlHeld = false;
+		try {
+			writer = new PrintWriter("system.log", "UTF-8");
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
 		
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
@@ -159,6 +189,7 @@ public class PoS {
 		/* ACTION LISTENERS */
 		ActionListener clrCancel = (new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				writer.println(cart.toString("CANCELLED"));
 				cart.clearAll("CANCELLED");
 				prodTable = cart.getTable();
 				btnPay.setEnabled(false);
@@ -184,16 +215,215 @@ public class PoS {
 		
 		btnPay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JComponent[] com = {btnPay,btnCancel,btnProcess,lblTendered,tenderedField,lblRequired,requiredLabel};
-				for(int i = 0; i < com.length; i++) {
-					toggleVisibility(com[i]);
+				if(ctrlHeld) {
+					JDialog getInput = new JDialog(frame);
+					getInput.setBounds(100, 100, 197, 152);
+					
+					getInput.setTitle("Pay Window");
+					getInput.getContentPane().setLayout(new BorderLayout());
+					JPanel contentPanel = new JPanel();
+					contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+					getInput.getContentPane().add(contentPanel, BorderLayout.CENTER);
+					contentPanel.setLayout(new MigLayout("", "[][]", "[][][]"));
+					
+					JLabel lblTotal = new JLabel("Total:");
+					contentPanel.add(lblTotal, "cell 0 0");
+					
+					JLabel totalAmt = new JLabel(fmt.format(cart.getTotal()));
+					totalAmt.setHorizontalAlignment(SwingConstants.RIGHT);
+					contentPanel.add(totalAmt, "cell 1 0");
+					
+					JLabel lblTendered = new JLabel("Tendered:");
+					contentPanel.add(lblTendered, "cell 0 1,alignx trailing");
+					
+					JTextField tendFld = new JTextField();
+					tendFld.setHorizontalAlignment(SwingConstants.RIGHT);
+					tendFld.setText("0.00");
+					contentPanel.add(tendFld, "cell 1 1,alignx left");
+					
+					tendered = Double.parseDouble(tendFld.getText());
+					
+					JLabel lblRequired = new JLabel("Required:");
+					contentPanel.add(lblRequired, "cell 0 2");
+					
+					required = cart.getTotal() - tendered;
+					JLabel reqAmt = new JLabel(fmt.format(required));
+					contentPanel.add(reqAmt, "cell 1 2");
+					
+					tendFld.setColumns(10);
+					tendFld.getDocument().addDocumentListener(new DocumentListener() {
+						@Override
+						public void changedUpdate(DocumentEvent e) {
+							requireChange();
+						}
+
+						@Override
+						public void insertUpdate(DocumentEvent e) {
+							requireChange();
+						}
+
+						@Override
+						public void removeUpdate(DocumentEvent e) {
+							requireChange();
+						}
+						
+						private void requireChange() {
+							if(tendFld.getText().matches("^[0-9]\\d*(\\.\\d+)?$")) {
+								tendered = Double.parseDouble(tendFld.getText());
+								required = cart.getTotal() - tendered;
+								reqAmt.setText(fmt.format(required));
+							}
+						}
+					});
+					
+					JPanel buttonPane = new JPanel();
+					buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+					getInput.getContentPane().add(buttonPane, BorderLayout.SOUTH);
+					
+					JButton prcBtn = new JButton("Process");
+					buttonPane.add(prcBtn);
+					getInput.getRootPane().setDefaultButton(prcBtn);
+					
+					prcBtn.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							Date date = new Date();
+							try {
+								if(!tendFld.getText().matches("^[0-9]\\d*(\\.\\d+)?$")) {
+									if(tendFld.getText().isEmpty()) {
+										JOptionPane.showMessageDialog(frame, "Error! Tendered field cannot be empty", "Error - Empty Field", JOptionPane.ERROR_MESSAGE);
+									} else {
+										JOptionPane.showMessageDialog(frame, "Error! Tendered field can only contain numbers greater than or equal to 0.00", "Error - Tendered", JOptionPane.ERROR_MESSAGE);
+									}
+								} else {
+									if(Double.parseDouble(tendFld.getText()) < cart.getTotal()) {
+										JOptionPane.showMessageDialog(frame, "Error! Tendered amount must be greater than or equal to " + fmt.format(cart.getTotal()), "Error - Not Enough", JOptionPane.ERROR_MESSAGE);
+									} else {
+										Transaction t = new Transaction(date,user,cart.getTotal(),tendered,fmt.parse(reqAmt.getText()).doubleValue(),cart.getId());
+										trans.addTrans(t);
+										transTable = trans.getTable();
+									    writer.println(cart.toString("PROCESSED"));
+										cart.clearAll("PROCESSED");
+										cart.cartId++;
+										prodTable = cart.getTable();
+										btnPay.setEnabled(false);
+										
+										tendered = 0.00;
+										required = cart.getTotal() - tendered;
+										total.setText(fmt.format(cart.getTotal()));
+										tendFld.setText("0.00");
+										reqAmt.setText(fmt.format(required));
+										getInput.setVisible(false);
+									}
+									ctrlHeld = false;
+								}
+							} catch (NumberFormatException | ParseException e2) {
+								e2.printStackTrace();
+							}
+						}
+					});
+					
+					JButton cancelBtn = new JButton("Cancel");
+					cancelBtn.setActionCommand("Cancel");
+					buttonPane.add(cancelBtn);
+					
+					cancelBtn.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							writer.println(cart.toString("CANCELLED"));
+							cart.clearAll("CANCELLED");
+							prodTable = cart.getTable();
+							btnPay.setEnabled(false);
+							
+							tendered = 0.00;
+							required = cart.getTotal() - tendered;
+							total.setText(fmt.format(cart.getTotal()));
+							tendFld.setText("0.00");
+							reqAmt.setText(fmt.format(required));
+							getInput.setVisible(false);
+							ctrlHeld = false;
+						}
+					});
+					
+					getInput.addWindowListener(new WindowListener() {
+
+						@Override
+						public void windowActivated(WindowEvent arg0) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void windowClosed(WindowEvent arg0) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void windowClosing(WindowEvent arg0) {
+							ctrlHeld = false;
+						}
+
+						@Override
+						public void windowDeactivated(WindowEvent arg0) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void windowDeiconified(WindowEvent arg0) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void windowIconified(WindowEvent arg0) {
+							// TODO Auto-generated method stub
+							
+						}
+
+						@Override
+						public void windowOpened(WindowEvent arg0) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+					});
+				
+					getInput.setVisible(true);
+				} else {
+					JComponent[] com = {btnPay,btnCancel,btnProcess,lblTendered,tenderedField,lblRequired,requiredLabel};
+					for(int i = 0; i < com.length; i++) {
+						toggleVisibility(com[i]);
+					}
 				}
+			}
+		});
+		
+		btnPay.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
+					ctrlHeld = true;
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
+					ctrlHeld = false;
+				}
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// Do nothing
 			}
 		});
 		
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(prodTable.getRowCount() == prodTable.getSelectedRows().length) {
+					writer.println(cart.toString("CANCELLED"));
 					cart.clearAll("CANCELLED");
 					prodTable = cart.getTable();
 					tendered = 0.00;
@@ -274,10 +504,12 @@ public class PoS {
 						if(Double.parseDouble(tenderedField.getText()) < cart.getTotal()) {
 							JOptionPane.showMessageDialog(frame, "Error! Tendered amount must be greater than or equal to " + fmt.format(cart.getTotal()), "Error - Not Enough", JOptionPane.ERROR_MESSAGE);
 						} else {
-							Transaction t = new Transaction(date,user,cart.getTotal(),tendered,fmt.parse(requiredLabel.getText()).doubleValue());
+							Transaction t = new Transaction(date,user,cart.getTotal(),tendered,fmt.parse(requiredLabel.getText()).doubleValue(),cart.getId());
 							trans.addTrans(t);
 							transTable = trans.getTable();
+							writer.print(cart.toString("PROCESSED"));
 							cart.clearAll("PROCESSED");
+							cart.cartId++;
 							prodTable = cart.getTable();
 							btnPay.setEnabled(false);
 							if(!btnPay.isVisible()) { toggleVisibility(btnPay); }
@@ -334,6 +566,52 @@ public class PoS {
 		});
 		clock.setRepeats(true);
         clock.start();
+        
+        frame.addWindowListener(new WindowListener() {
+
+			@Override
+			public void windowActivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowClosed(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				writer.print(trans.toString());
+				writer.close();
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowIconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowOpened(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+        	
+        });
 	}
 	
 	/**

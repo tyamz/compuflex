@@ -15,6 +15,7 @@ class Transaction {
 	Double total;
 	Double tendered;
 	Double change;
+	int transId;
 	
 	/**
 	 * Default Constructor
@@ -29,12 +30,13 @@ class Transaction {
 	 * @param tend the total amount tendered for the transaction
 	 * @param ch the total amount of change returned for the transaction
 	 */
-	Transaction(Date s, User u, Double tot, Double tend, Double ch) {
+	Transaction(Date s, User u, Double tot, Double tend, Double ch, int id) {
 		this.stamp = s;
 		this.user = u;
 		this.total = tot;
 		this.tendered = tend;
 		this.change = ch;
+		this.transId = id;
 	}
 	
 	/**
@@ -75,5 +77,13 @@ class Transaction {
 	 */
 	Double getChange() {
 		return this.change;
+	}
+	
+	/**
+	 * Get ID
+	 * @return ID of Cart/Transaction
+	 */
+	int getId() {
+		return this.transId;
 	}
 }
