@@ -246,8 +246,8 @@ public class LayoutController implements Initializable {
 									trans.add(t);
 									
 									
-									pw.println(cart.toString("PROCESSED"));
-									System.out.println(cart.toString("PROCESSED"));
+									pw.println(cart.toString("COMPLETE"));
+									System.out.println(cart.toString("COMPLETE"));
 									cart.clearAll();
 									totalAmt.setText(cart.getStringTotal());
 									tenderedAmt.setText("0.00");
