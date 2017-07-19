@@ -1,6 +1,9 @@
 package application;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -42,6 +45,8 @@ public class LayoutController implements Initializable {
 	private Double tendered;
 	private Double required;
 	private String usr = "Tommy";
+	private PrintWriter pw;
+	private Boolean processed = false;
 	
 	/* TOP BAR */
 	@FXML private Button usrBtn;
@@ -88,6 +93,9 @@ public class LayoutController implements Initializable {
 
 	@FXML
 	public void clearAll(ActionEvent event) {
+		String status = (this.processed) ? "COMPLETE" : "CANCELLED";
+		this.pw.println(this.cart.toString(status));
+		System.out.println(this.cart.toString(status));
 		this.cart.clearAll();
 		this.totalAmt.setText(cart.getStringTotal());
 		this.tenderedAmt.setText("0.00");
@@ -98,6 +106,7 @@ public class LayoutController implements Initializable {
 		this.payBtn.setVisible(true);
 		this.payBtn.setDisable(true);
 		this.addBtn.setDisable(false);
+		this.processed = false;
 	}
 
 	@FXML
@@ -113,6 +122,7 @@ public class LayoutController implements Initializable {
 			Date stamp = new Date();
 			Transaction t = new Transaction(stamp,this.usr,cart.getTotal(),tendered,this.fmt.parse(reqAmt.getText()).doubleValue());
 			this.trans.add(t);
+			this.processed = true;
 			this.clearAll(event);
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -140,6 +150,13 @@ public class LayoutController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		try {
+			this.pw = new PrintWriter("Compuflex_PoS_JavaFX_1.0.log", "UTF-8");
+		} catch (FileNotFoundException | UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		Timeline timeline = new Timeline(
 				new KeyFrame(Duration.seconds(0), new EventHandler<ActionEvent>() {
 					@Override public void handle(ActionEvent actionEvent) {
@@ -228,8 +245,10 @@ public class LayoutController implements Initializable {
 									Transaction t = new Transaction(date,usr,cart.getTotal(),tendered,required);
 									trans.add(t);
 									
+									
+									pw.println(cart.toString("PROCESSED"));
+									System.out.println(cart.toString("PROCESSED"));
 									cart.clearAll();
-									cart.products.clear();
 									totalAmt.setText(cart.getStringTotal());
 									tenderedAmt.setText("0.00");
 									reqAmt.setText(fmt.format(0.00));
@@ -266,5 +285,13 @@ public class LayoutController implements Initializable {
 			}
 		});
 		
+		Main.mainStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+			@Override
+			public void handle(WindowEvent arg0) {
+				pw.close();
+			}
+			
+		});
 	}
 }

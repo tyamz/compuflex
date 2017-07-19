@@ -1,6 +1,6 @@
 # Compuflex - PoS - Java (Swing)
 ## Point of Sale (PoS)
-This was a sample Point of Sale (PoS) System made with Java Swing / AWT for the Compuflex Corporation to help test various screen mapping and management software(s).
+This is a sample Point of Sale (PoS) System made with Java Swing / AWT for the Compuflex Corporation to help test various screen mapping and management software(s).
 
 ## File "Structure"
  - [PoS.java](/PoS%20(Java%20-%20Swing)/PoS.java) ~ main file that comprises the entire PoS system.

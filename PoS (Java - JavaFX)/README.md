@@ -1,6 +1,6 @@
 # Compuflex - PoS - Java (JavaFX)
 ## Point of Sale (PoS)
-This was a sample Point of Sale (PoS) System made with JavaFX for the Compuflex Corporation to help test various screen mapping and management software(s).
+This is a sample Point of Sale (PoS) System made with JavaFX for the Compuflex Corporation to help test various screen mapping and management software(s).
 
 ## File "Structure"
  - [LayoutController.java](/PoS%20(Java%20-%20JavaFX)/LayoutController.java) ~ controller for the main "Layout.fxml" file.
