@@ -357,7 +357,7 @@ public class LayoutController implements Initializable {
 	
 	private void initializePrinter() {
 		try {
-			this.pw = new PrintWriter("Compuflex_PoS_JavaFX_1.0.log", "UTF-8");
+			this.pw = new PrintWriter("Compuflex_PoS_JavaFX_1.2.log", "UTF-8");
 		} catch (FileNotFoundException | UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		}
@@ -436,7 +436,7 @@ public class LayoutController implements Initializable {
 			// create and load default properties
 			Properties defaultProps = new Properties();
 			FileInputStream in;
-			in = new FileInputStream("defaultProperties.properties");
+			in = new FileInputStream("default.properties");
 			defaultProps.load(in);
 			in.close();
 	
@@ -445,7 +445,7 @@ public class LayoutController implements Initializable {
 	
 			// now load properties 
 			// from last invocation
-			in = new FileInputStream("appProperties.properties");
+			in = new FileInputStream("Compuflex_PoS_JavaFX_1.2.properties");
 			this.appProps.load(in);
 			in.close();
 		} catch (IOException e2) {

@@ -132,7 +132,7 @@ public class SettingsLayoutController implements Initializable {
 	private void createProperties() throws IOException {
 		// create and load default properties
 		Properties defaultProps = new Properties();
-		FileInputStream in = new FileInputStream("defaultProperties.properties");
+		FileInputStream in = new FileInputStream("default.properties");
 		defaultProps.load(in);
 		in.close();
 
@@ -141,14 +141,14 @@ public class SettingsLayoutController implements Initializable {
 
 		// now load properties 
 		// from last invocation
-		in = new FileInputStream("appProperties.properties");
+		in = new FileInputStream("Compuflex_PoS_JavaFX_1.2.properties");
 		this.applicationProps.load(in);
 		in.close();
 	}
 	
 	private void saveProperties() throws IOException {
 		// save properties
-		FileOutputStream out = new FileOutputStream("appProperties.properties");
+		FileOutputStream out = new FileOutputStream("Compuflex_PoS_JavaFX_1.2.properties");
 		this.applicationProps.setProperty("payPop", this.pop);
 		this.applicationProps.setProperty("nameSetting", this.nameSetting + "");
 		this.applicationProps.store(out, "-- No Comment --");
