@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="485.0" prefWidth="605.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LayoutController">
+<AnchorPane fx:id="mainAnchorPane" prefHeight="485.0" prefWidth="605.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LayoutController">
    <children>
       <AnchorPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="605.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Button fx:id="usrBtn" layoutX="14.0" layoutY="8.0" mnemonicParsing="false" onAction="#changeUser" text="Tommy" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="8.0" />
+            <Button fx:id="usrBtn" layoutX="14.0" layoutY="8.0" mnemonicParsing="false" onAction="#changeUser" text="Tommy" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="8.0" />
             <Label fx:id="date" layoutX="563.0" layoutY="12.0" text="Date" AnchorPane.bottomAnchor="7.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="7.0" />
+            <Label fx:id="usrLbl" layoutX="20.0" layoutY="12.0" onMouseClicked="#changeUser" text="Tommy" visible="false" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="11.0" />
+            <MenuButton fx:id="usrDrop" layoutX="77.0" layoutY="8.0" mnemonicParsing="false" text="Current User" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="8.0" />
+            <ImageView fx:id="nameImage" fitHeight="24.0" fitWidth="126.0" layoutX="79.0" layoutY="8.0" onMouseClicked="#changeUser" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="8.0" />
          </children>
       </AnchorPane>
       <TabPane layoutX="8.0" maxHeight="485.0" prefHeight="485.0" prefWidth="868.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
@@ -39,7 +43,7 @@
                         </ToolBar>
                         <AnchorPane layoutY="415.0" prefHeight="41.0" prefWidth="605.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <children>
-                              <Button fx:id="payBtn" alignment="CENTER_RIGHT" disable="true" layoutX="560.0" layoutY="8.0" mnemonicParsing="false" onAction="#pay" snapToPixel="false" text="Pay" textAlignment="RIGHT" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="8.0" />
+                              <Button fx:id="payBtnInside" alignment="CENTER_RIGHT" disable="true" layoutX="560.0" layoutY="8.0" mnemonicParsing="false" onAction="#pay" snapToPixel="false" text="Pay" textAlignment="RIGHT" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="8.0" />
                               <Label fx:id="totalAmt" text="\$0.00" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="44.0" AnchorPane.topAnchor="7.0">
                                  <padding>
                                     <Insets bottom="5.0" left="5.0" right="9.0" top="5.0" />
@@ -58,7 +62,7 @@
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding>
                                     </Label>
-                                    <Button fx:id="cancelBtn" alignment="CENTER_RIGHT" cancelButton="true" layoutX="450.0" layoutY="10.0" mnemonicParsing="false" onAction="#cancel" snapToPixel="false" text="Cancel" textAlignment="RIGHT" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="8.0" />
+                                    <Button alignment="CENTER_RIGHT" cancelButton="true" layoutX="450.0" layoutY="10.0" mnemonicParsing="false" onAction="#cancel" snapToPixel="false" text="Cancel" textAlignment="RIGHT" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="8.0" />
                                     <Button fx:id="prcBtn" alignment="CENTER_RIGHT" cancelButton="true" disable="true" layoutX="386.0" layoutY="10.0" mnemonicParsing="false" onAction="#process" snapToPixel="false" text="Process" textAlignment="RIGHT" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="8.0" />
                                     <TextField fx:id="tenderedAmt" alignment="CENTER_RIGHT" layoutX="79.0" layoutY="8.0" prefHeight="25.0" prefWidth="105.0" promptText="0.00" text="0.00" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="73.0" AnchorPane.topAnchor="8.0" />
                                     <Separator layoutX="194.0" orientation="VERTICAL" prefHeight="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="188.0" AnchorPane.topAnchor="0.0" />
@@ -74,6 +78,7 @@
                                     </Label>
                                  </children>
                               </AnchorPane>
+                              <Button fx:id="payBtnPop" alignment="CENTER_RIGHT" disable="true" layoutX="570.0" layoutY="18.0" mnemonicParsing="false" onAction="#payPop" snapToPixel="false" text="Pay" textAlignment="RIGHT" visible="false" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="8.0" />
                            </children>
                         </AnchorPane>
                      </children>
