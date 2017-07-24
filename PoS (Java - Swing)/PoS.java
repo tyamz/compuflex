@@ -1,51 +1,78 @@
-package compuflexPosSwing;
+package posSwing;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 
-import javax.swing.*;
-import javax.swing.border.Border;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import net.miginfocom.swing.MigLayout;
 
-/**
- * Point of Sale (PoS) System
- * This is a sample or "mock" Point of Sale System made at the Compuflex Corporation for testing purpose(s). This is designed to help test our
- * screen management software.
- * 
- * @author Thomas Yamakaitis
- * @version 1.1
- */
 public class PoS {
 
 	private JFrame frame;
-	private JTable prodTable;
+	private JTable itemTable;
 	private JTable transTable;
-	private User user;
-	private Double tendered;
-	private Double required;
-	private Date date;
-	private Boolean ctrlHeld;
-	private PrintWriter writer;
+	private JButton userBtn; 
+	private JPanel buttonPanel;
+	private JLabel userLbl;
+	private JPanel labelPanel;
+	private JMenu userDrop;
+	private User u;
+	private Cart cart;
+	private TransactionRecord trans;
+	private String[] names = {"Iron Man", "Captain America", "Deadpool", "Black Panther", "Scarlet Witch", "The Incredible Hulk", "Wolverine", "Starlord", "Rocket Raccoon"};
+	private Settings appSettings;
+	private JMenuItem settingsMenu;
+	private JComponent userDisplay;
+	private boolean functions = false;
+	private JButton btnAdd;
+	private JButton btnClear;
+	private JLabel totalAmt;
+	private JButton btnPay;
+	private JButton btnProcess;
+	private JButton btnCancel;
+	private JLabel lblTendered;
+	private JTextField tenderedAmt;
+	private JLabel lblRequired;
+	private JLabel requiredAmt;
+	private JLabel timeStamp;
+	private DecimalFormat fmt;
+	private DateFormat dateFmt;
+	private JPanel panel_1;
+	private PrintWriter printer;
 
 	/**
 	 * Launch the application.
@@ -74,277 +101,311 @@ public class PoS {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 793, 542);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		frame.setTitle("Point of Sale (PoS) - The Compuflex Corporation");
-		
-		Cart cart = new Cart();
-		Trans trans = new Trans();
-		DateFormat dateFmt = trans.getDateFormat();
-		ArrayList<User> users = new ArrayList<>();
-		user = new User();
-		users.add(user);
-		Border border = BorderFactory.createLineBorder(Color.GREEN);
-		DecimalFormat fmt = cart.getNumFormat();
-		tendered = 0.00;
-		required = cart.getTotal() - tendered;
-		ctrlHeld = false;
+		u = new User("Default User");
+		cart = new Cart();
+		trans = new TransactionRecord();
+		fmt = cart.getFmt();
+		dateFmt = trans.getDateFmt();
 		try {
-			writer = new PrintWriter("system.log", "UTF-8");
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		} catch (UnsupportedEncodingException e1) {
-			e1.printStackTrace();
+			printer = new PrintWriter(new File("Compuflex_PoS_Swing_2.0.log"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
-		JMenuBar menuBar = new JMenuBar();
-		frame.setJMenuBar(menuBar);
-		
-		JMenuItem usrBtn = new JMenuItem(user.name);
-		usrBtn.setHorizontalAlignment(SwingConstants.LEFT);
-		menuBar.add(usrBtn);
-		date = new Date();
-		JMenuItem timeStamp = new JMenuItem(dateFmt.format(date));
-		menuBar.add(timeStamp);
-		frame.getContentPane().setLayout(new MigLayout("insets 4 4 4 4",
-                "[fill,grow]", "[fill,90%]"));
+		frame = new JFrame();
+		frame.setBounds(100, 100, 721, 488);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(new MigLayout("", "[grow]", "[grow]"));
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frame.getContentPane().add(tabbedPane, "cell 0 0,grow");
 		
 		JPanel cartPanel = new JPanel();
 		tabbedPane.addTab("Cart", null, cartPanel, null);
-		cartPanel.setLayout(new MigLayout("", "[grow]", "[][grow][grow][]"));
+		cartPanel.setLayout(new MigLayout("", "[grow]", "[][grow][grow][grow]"));
+		
+		btnAdd = new JButton("Add");
+		btnAdd.setEnabled(false);
+		cartPanel.add(btnAdd, "flowx,cell 0 0");
+		
+		btnClear = new JButton("Clear");
+		btnClear.setEnabled(true);
+		cartPanel.add(btnClear, "cell 0 0");
+		
+		JScrollPane scrollPane = new JScrollPane();
+		cartPanel.add(scrollPane, "cell 0 1,growx,aligny top");
+		
+		itemTable = cart.getItems();
+		scrollPane.setViewportView(itemTable);
+		
+		JPanel panel = new JPanel();
+		cartPanel.add(panel, "cell 0 2,grow");
+		panel.setLayout(new MigLayout("", "[][][][][grow][][][][][][][][][][][][][][][][][][]", "[][]"));
+		
+		JLabel lblTotal = new JLabel("Total:");
+		panel.add(lblTotal, "cell 0 0");
+		
+		totalAmt = new JLabel("$0.00");
+		panel.add(totalAmt, "cell 1 0");
+		
+		lblTendered = new JLabel("Tendered:");
+		panel.add(lblTendered, "cell 3 0,alignx trailing");
+		
+		tenderedAmt = new JTextField();
+		tenderedAmt.setHorizontalAlignment(SwingConstants.RIGHT);
+		tenderedAmt.setText("0.00");
+		panel.add(tenderedAmt, "cell 4 0,growx");
+		tenderedAmt.setColumns(10);
+		
+		lblRequired = new JLabel("Required:");
+		panel.add(lblRequired, "cell 6 0");
+		
+		requiredAmt = new JLabel("$0.00");
+		panel.add(requiredAmt, "cell 7 0");
+		
+		btnProcess = new JButton("Process");
+		btnProcess.setEnabled(false);
+		panel.add(btnProcess, "cell 21 0");
+		
+		btnCancel = new JButton("Cancel");
+		panel.add(btnCancel, "flowx,cell 22 0");
+		
+		btnPay = new JButton("Pay");
+		btnPay.setVisible(false);
+		btnPay.setEnabled(false);
+		panel.add(btnPay, "cell 22 0");
 		
 		JPanel transPanel = new JPanel();
 		tabbedPane.addTab("Trans", null, transPanel, null);
-		transPanel.setLayout(new MigLayout("", "[grow]", "[][grow][grow][]"));
+		transPanel.setLayout(new MigLayout("", "[grow]", "[grow]"));
 		
-		JScrollPane scrollPane = new JScrollPane();
-		cartPanel.add(scrollPane, "cell 0 1,grow");
+		JScrollPane transScrollPane = new JScrollPane();
+		transPanel.add(transScrollPane, "cell 0 0,grow");
 		
-		JScrollPane transPane = new JScrollPane();
-		transPanel.add(transPane, "cell 0 1,grow");
+		transTable = trans.getTransactions();
+		transScrollPane.setViewportView(transTable);
 		
-		transTable = trans.getTable();
-		transPane.setViewportView(transTable);
-		prodTable = cart.getTable();
-		scrollPane.setViewportView(prodTable);
+		JPopupMenu popupMenu = new JPopupMenu();
+		addPopup(frame, popupMenu);
 		
-		JPanel toolbar = new JPanel();
-		cartPanel.add(toolbar, "cell 0 2,grow");
-		toolbar.setLayout(new MigLayout("", "[][][][][grow][][][][][][][][][][][][][][][][][][][][]", "[][]"));
+		settingsMenu = new JMenuItem("Settings");
+		popupMenu.add(settingsMenu);
 		
-		JLabel lblTendered = new JLabel("Tendered:");
-		lblTendered.setVisible(false);
-		toolbar.add(lblTendered, "cell 3 0,alignx trailing");
+		JMenuBar menuBar = new JMenuBar();
+		frame.setJMenuBar(menuBar);
 		
-		JTextField tenderedField = new JTextField();
-		tenderedField.setVisible(false);
-		tenderedField.setHorizontalAlignment(SwingConstants.RIGHT);
-		tenderedField.setText("0.00");
-		toolbar.add(tenderedField, "cell 4 0,growx");
-		tenderedField.setColumns(10);
+		userDrop = new JMenu(u.getName());
+		menuBar.add(userDrop);
 		
-		JLabel lblRequired = new JLabel("Required:  ");
-		lblRequired.setVisible(false);
-		toolbar.add(lblRequired, "cell 7 0");
+		labelPanel = new JPanel();
+		menuBar.add(labelPanel);
+		labelPanel.setLayout(new MigLayout("", "[]", "[]"));
 		
-		JLabel requiredLabel = new JLabel(fmt.format(cart.getTotal() - tendered));
-		requiredLabel.setVisible(false);
-		requiredLabel.setBorder(border);
-		requiredLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		toolbar.add(requiredLabel, "cell 8 0");
+		userLbl = new JLabel(u.getName());
+		labelPanel.add(userLbl, "cell 0 0");
+		userLbl.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		JLabel lblTotal = new JLabel("Total:  ");
-		toolbar.add(lblTotal, "cell 0 0");
+		buttonPanel = new JPanel();
+		menuBar.add(buttonPanel);
+		buttonPanel.setLayout(new MigLayout("", "[grow]", "[grow]"));
 		
-		JLabel total = new JLabel(fmt.format(cart.getTotal()));
-		total.setBorder(border);
-		toolbar.add(total, "cell 1 0");
+		userBtn = new JButton(u.getName());
+		buttonPanel.add(userBtn, "flowx,cell 0 0,alignx left,aligny center");
 		
-		JButton btnProcess = new JButton("Process");
-		btnProcess.setVisible(false);
-		toolbar.add(btnProcess, "flowx,cell 24 0");
+		Date date = new Date();
 		
-		JButton btnAdd = new JButton("Add");
-		cartPanel.add(btnAdd, "flowx,cell 0 0");
+		panel_1 = new JPanel();
+		menuBar.add(panel_1);
+		panel_1.setLayout(new MigLayout("", "[]", "[]"));
+		timeStamp = new JLabel(dateFmt.format(date));
+		panel_1.add(timeStamp, "cell 0 0");
 		
-		JButton btnRemove = new JButton("Remove");
-		cartPanel.add(btnRemove, "cell 0 0");
+		/* CODE BEGINS HERE */
+		togglePay();
+		JComponent[] jcomps = {buttonPanel,labelPanel,userDrop};
+		toggleVisibility(jcomps);
 		
-		JButton btnClear = new JButton("Clear");
-		cartPanel.add(btnClear, "cell 0 0");
-		
-		JButton btnCancel = new JButton("Cancel");
-		btnCancel.setVisible(false);
-		toolbar.add(btnCancel, "cell 24 0");
-		
-		JButton btnPay = new JButton("Pay");
-		btnPay.setEnabled(false);
-		toolbar.add(btnPay, "cell 24 0");
-		
-		/* ACTION LISTENERS */
-		ActionListener clrCancel = (new ActionListener() {
+		setUser();
+		appSettings = new Settings();
+		setSettings();
+		show();
+	}
+
+	private void setSettings() {
+		appSettings.getComponents().clear();
+		if(!functions) { assignFunctions(); } // Assigns functionality to buttons, drop-downs, labels, etc.
+		setDisplayOptions(); // Sets display options
+	}
+
+	private void setDisplayOptions() {
+		if(userDisplay != null) { userDisplay.setVisible(false); }
+		switch(appSettings.getUserDisplayOption()) {
+			case 0:
+				userDisplay = buttonPanel;
+				break;
+			case 1:
+				userDisplay = labelPanel;
+				break;
+			case 2:
+				userDisplay = userDrop;
+				break;
+			default:
+				userDisplay = buttonPanel;
+				break;
+		}
+		userDisplay.setVisible(true);
+	}
+
+	private void assignFunctions() {		
+		userBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				writer.println(cart.toString("CANCELLED"));
-				cart.clearAll("CANCELLED");
-				prodTable = cart.getTable();
-				btnPay.setEnabled(false);
-				if(!btnPay.isVisible()) { toggleVisibility(btnPay); }
-				JComponent[] com = {btnCancel,btnProcess,lblTendered,tenderedField,lblRequired,requiredLabel};
-				for(int i = 0; i < com.length; i++) {
-					if(com[i].isVisible()) {
-						toggleVisibility(com[i]);
-					} else {
-						break;
-					}
-				}
-				
-				tendered = 0.00;
-				required = cart.getTotal() - tendered;
-				total.setText(fmt.format(cart.getTotal()));
-				tenderedField.setText("0.00");
-				requiredLabel.setText(fmt.format(required));
+				setUser();
 			}
 		});
-		btnClear.addActionListener(clrCancel);
-		btnCancel.addActionListener(clrCancel);
+		
+		for(String s: names) {
+			JMenuItem jmi = new JMenuItem(s);
+			jmi.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					setUser(jmi.getText());
+				}
+			});
+			userDrop.add(jmi);
+		}
+		
+		userLbl.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				setUser();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		userLbl.setBorder(new EmptyBorder(5,5,5,5));
+		
+		settingsMenu.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				SettingsWindow sw = new SettingsWindow(appSettings);
+				sw.frame.setVisible(true);
+				sw.frame.addWindowListener(new WindowListener() {
+
+					@Override
+					public void windowActivated(WindowEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void windowClosed(WindowEvent e) {
+						setSettings();
+					}
+
+					@Override
+					public void windowClosing(WindowEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void windowDeactivated(WindowEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void windowDeiconified(WindowEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void windowIconified(WindowEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void windowOpened(WindowEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+				});
+			}
+		});
+		
+		functions = true;
+		
+		btnAdd.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {	
+				try {
+					cart.addItem();
+					itemTable = cart.getItems();
+					totalAmt.setText(fmt.format(cart.getTotal()));
+					Double tendered = Double.parseDouble(tenderedAmt.getText());
+					requiredAmt.setText(fmt.format(cart.getTotal() - tendered));
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				if(cart.getItems().getRowCount() > 0) {
+					btnClear.setEnabled(true);
+					btnPay.setEnabled(true);
+				}
+			}
+		});
+		
+		btnClear.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					printer.println(cart.toString("CANCELLED"));
+					System.out.println(cart.toString("CANCELLED"));
+					cart.clear();
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				itemTable = cart.getItems();
+				totalAmt.setText(fmt.format(cart.getTotal()));
+				btnClear.setEnabled(false);
+				btnPay.setEnabled(false);
+			}
+		});
 		
 		btnPay.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(ctrlHeld) {
-					JDialog getInput = new JDialog(frame);
-					getInput.setBounds(100, 100, 197, 152);
-					
-					getInput.setTitle("Pay Window");
-					getInput.getContentPane().setLayout(new BorderLayout());
-					JPanel contentPanel = new JPanel();
-					contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-					getInput.getContentPane().add(contentPanel, BorderLayout.CENTER);
-					contentPanel.setLayout(new MigLayout("", "[][]", "[][][]"));
-					
-					JLabel lblTotal = new JLabel("Total:");
-					contentPanel.add(lblTotal, "cell 0 0");
-					
-					JLabel totalAmt = new JLabel(fmt.format(cart.getTotal()));
-					totalAmt.setHorizontalAlignment(SwingConstants.RIGHT);
-					contentPanel.add(totalAmt, "cell 1 0");
-					
-					JLabel lblTendered = new JLabel("Tendered:");
-					contentPanel.add(lblTendered, "cell 0 1,alignx trailing");
-					
-					JTextField tendFld = new JTextField();
-					tendFld.setHorizontalAlignment(SwingConstants.RIGHT);
-					tendFld.setText("0.00");
-					contentPanel.add(tendFld, "cell 1 1,alignx left");
-					
-					tendered = Double.parseDouble(tendFld.getText());
-					
-					JLabel lblRequired = new JLabel("Required:");
-					contentPanel.add(lblRequired, "cell 0 2");
-					
-					required = cart.getTotal() - tendered;
-					JLabel reqAmt = new JLabel(fmt.format(required));
-					contentPanel.add(reqAmt, "cell 1 2");
-					
-					tendFld.setColumns(10);
-					tendFld.getDocument().addDocumentListener(new DocumentListener() {
-						@Override
-						public void changedUpdate(DocumentEvent e) {
-							requireChange();
-						}
-
-						@Override
-						public void insertUpdate(DocumentEvent e) {
-							requireChange();
-						}
-
-						@Override
-						public void removeUpdate(DocumentEvent e) {
-							requireChange();
-						}
-						
-						private void requireChange() {
-							if(tendFld.getText().matches("^[0-9]\\d*(\\.\\d+)?$")) {
-								tendered = Double.parseDouble(tendFld.getText());
-								required = cart.getTotal() - tendered;
-								reqAmt.setText(fmt.format(required));
-							}
-						}
-					});
-					
-					JPanel buttonPane = new JPanel();
-					buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-					getInput.getContentPane().add(buttonPane, BorderLayout.SOUTH);
-					
-					JButton prcBtn = new JButton("Process");
-					buttonPane.add(prcBtn);
-					getInput.getRootPane().setDefaultButton(prcBtn);
-					
-					prcBtn.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							Date date = new Date();
-							try {
-								if(!tendFld.getText().matches("^[0-9]\\d*(\\.\\d+)?$")) {
-									if(tendFld.getText().isEmpty()) {
-										JOptionPane.showMessageDialog(frame, "Error! Tendered field cannot be empty", "Error - Empty Field", JOptionPane.ERROR_MESSAGE);
-									} else {
-										JOptionPane.showMessageDialog(frame, "Error! Tendered field can only contain numbers greater than or equal to 0.00", "Error - Tendered", JOptionPane.ERROR_MESSAGE);
-									}
-								} else {
-									if(Double.parseDouble(tendFld.getText()) < cart.getTotal()) {
-										JOptionPane.showMessageDialog(frame, "Error! Tendered amount must be greater than or equal to " + fmt.format(cart.getTotal()), "Error - Not Enough", JOptionPane.ERROR_MESSAGE);
-									} else {
-										Transaction t = new Transaction(date,user,cart.getTotal(),tendered,fmt.parse(reqAmt.getText()).doubleValue(),cart.getId());
-										trans.addTrans(t);
-										transTable = trans.getTable();
-									    writer.println(cart.toString("PROCESSED"));
-										cart.clearAll("PROCESSED");
-										cart.cartId++;
-										prodTable = cart.getTable();
-										btnPay.setEnabled(false);
-										
-										tendered = 0.00;
-										required = cart.getTotal() - tendered;
-										total.setText(fmt.format(cart.getTotal()));
-										tendFld.setText("0.00");
-										reqAmt.setText(fmt.format(required));
-										getInput.setVisible(false);
-									}
-									ctrlHeld = false;
-								}
-							} catch (NumberFormatException | ParseException e2) {
-								e2.printStackTrace();
-							}
-						}
-					});
-					
-					JButton cancelBtn = new JButton("Cancel");
-					cancelBtn.setActionCommand("Cancel");
-					buttonPane.add(cancelBtn);
-					
-					cancelBtn.addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							writer.println(cart.toString("CANCELLED"));
-							cart.clearAll("CANCELLED");
-							prodTable = cart.getTable();
-							btnPay.setEnabled(false);
-							
-							tendered = 0.00;
-							required = cart.getTotal() - tendered;
-							total.setText(fmt.format(cart.getTotal()));
-							tendFld.setText("0.00");
-							reqAmt.setText(fmt.format(required));
-							getInput.setVisible(false);
-							ctrlHeld = false;
-						}
-					});
-					
-					getInput.addWindowListener(new WindowListener() {
+				if(appSettings.isPopUp()) {
+					@SuppressWarnings("unused")
+					PayWindow pw = new PayWindow(cart,trans,u);
+					pw.frame.addWindowListener(new WindowListener() {
 
 						@Override
 						public void windowActivated(WindowEvent arg0) {
@@ -354,13 +415,26 @@ public class PoS {
 
 						@Override
 						public void windowClosed(WindowEvent arg0) {
-							// TODO Auto-generated method stub
-							
+							try {
+								printer.println(cart.toString("PROCESSED"));
+								System.out.println(cart.toString("COMPLETE"));
+								JButton[] buttons = {btnPay,btnClear};
+								toggle(buttons);
+								cart.clear();
+								totalAmt.setText(fmt.format(cart.getTotal()));
+								tenderedAmt.setText("0.00");
+								requiredAmt.setText(fmt.format(cart.getTotal()));
+							} catch (ParseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}
+						
 
 						@Override
 						public void windowClosing(WindowEvent arg0) {
-							ctrlHeld = false;
+							// TODO Auto-generated method stub
+							
 						}
 
 						@Override
@@ -388,179 +462,85 @@ public class PoS {
 						}
 						
 					});
-				
-					getInput.setVisible(true);
 				} else {
-					JComponent[] com = {btnPay,btnCancel,btnProcess,lblTendered,tenderedField,lblRequired,requiredLabel};
-					for(int i = 0; i < com.length; i++) {
-						toggleVisibility(com[i]);
-					}
+					togglePay();
 				}
 			}
 		});
 		
-		btnPay.addKeyListener(new KeyListener() {
+		btnCancel.addActionListener(new ActionListener() {
 			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
-					ctrlHeld = true;
-				}
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
-					ctrlHeld = false;
-				}
-			}
-
-			@Override
-			public void keyTyped(KeyEvent e) {
-				// Do nothing
+			public void actionPerformed(ActionEvent e) {
+				togglePay();
 			}
 		});
-		
-		btnRemove.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(prodTable.getRowCount() == prodTable.getSelectedRows().length) {
-					writer.println(cart.toString("CANCELLED"));
-					cart.clearAll("CANCELLED");
-					prodTable = cart.getTable();
-					tendered = 0.00;
-					required = cart.getTotal() - tendered;
-					total.setText(fmt.format(cart.getTotal()));
-					tenderedField.setText("0.00");
-					requiredLabel.setText(fmt.format(required));
-					btnPay.setEnabled(false);
-					if(!btnPay.isVisible()) { toggleVisibility(btnPay); }
-					JComponent[] com = {btnCancel,btnProcess,lblTendered,tenderedField,lblRequired,requiredLabel};
-					for(int i = 0; i < com.length; i++) {
-						if(com[i].isVisible()) {
-							toggleVisibility(com[i]);
-						} else {
-							break;
-						}
-					}
-				} else {
-					cart.removeProduct();
-					prodTable = cart.getTable();
-				}
-				
-				total.setText(fmt.format(cart.getTotal()));
-				requiredLabel.setText(fmt.format(required));
-			}
-		});
-		
-		btnAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String[] item = {"Macadamia", "Hazelnut", "Almond", "Peanut", "Walnut", "Pistachio", "Pecan", "Brazil"};
-				Double[] price = {2.00, 1.90, 1.31, 0.85, 1.12, 1.53, 1.25, 1.75};
-				
-				int choice = (int) (Math.random() * item.length);
-				
-				Product p = new Product(item[choice], price[choice]);
-				
-				cart.addProduct(p);
-				prodTable = cart.getTable();
-				btnPay.setEnabled(true);
-				total.setText(fmt.format(cart.getTotal()));
-				required = cart.getTotal() - tendered;
-				requiredLabel.setText(fmt.format(required));
-			}
-		});
-		
-		tenderedField.getDocument().addDocumentListener(new DocumentListener() {
-
-			public void changedUpdate(DocumentEvent documentEvent) {
-            	changeRequired();
-            }
-			public void insertUpdate(DocumentEvent documentEvent) {
-            	changeRequired();
-            }
-			public void removeUpdate(DocumentEvent documentEvent) {
-            	changeRequired();
-            }
-			public void changeRequired() {
-				if(tenderedField.getText().matches("^[0-9]\\d*(\\.\\d+)?$")) {
-					tendered = Double.parseDouble(tenderedField.getText());
-					required = cart.getTotal() - tendered;
-					requiredLabel.setText(fmt.format(required));
-				}
-			}
-		});
-		tenderedField.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		btnProcess.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Date date = new Date();
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				try {
-					if(!tenderedField.getText().matches("^[0-9]\\d*(\\.\\d+)?$")) {
-						if(tenderedField.getText().isEmpty()) {
-							JOptionPane.showMessageDialog(frame, "Error! Tendered field cannot be empty", "Error - Empty Field", JOptionPane.ERROR_MESSAGE);
-						} else {
-							JOptionPane.showMessageDialog(frame, "Error! Tendered field can only contain numbers greater than or equal to 0.00", "Error - Tendered", JOptionPane.ERROR_MESSAGE);
-						}
-					} else {
-						if(Double.parseDouble(tenderedField.getText()) < cart.getTotal()) {
-							JOptionPane.showMessageDialog(frame, "Error! Tendered amount must be greater than or equal to " + fmt.format(cart.getTotal()), "Error - Not Enough", JOptionPane.ERROR_MESSAGE);
-						} else {
-							Transaction t = new Transaction(date,user,cart.getTotal(),tendered,fmt.parse(requiredLabel.getText()).doubleValue(),cart.getId());
-							trans.addTrans(t);
-							transTable = trans.getTable();
-							writer.print(cart.toString("PROCESSED"));
-							cart.clearAll("PROCESSED");
-							cart.cartId++;
-							prodTable = cart.getTable();
-							btnPay.setEnabled(false);
-							if(!btnPay.isVisible()) { toggleVisibility(btnPay); }
-							JComponent[] com = {btnCancel,btnProcess,lblTendered,tenderedField,lblRequired,requiredLabel};
-							
-							for(int i = 0; i < com.length; i++) {
-								if(com[i].isVisible()) {
-									toggleVisibility(com[i]);
-								} else {
-									break;
-								}
-							}
-							
-							tendered = 0.00;
-							required = cart.getTotal() - tendered;
-							total.setText(fmt.format(cart.getTotal()));
-							tenderedField.setText("0.00");
-							requiredLabel.setText(fmt.format(required));
-						}
-					}
-				} catch (NumberFormatException | ParseException e) {
-					e.printStackTrace();
+					Double total = cart.getTotal();
+					Double tendered = Double.parseDouble(tenderedAmt.getText());
+					Double required = fmt.parse(requiredAmt.getText()).doubleValue();
+					Date current = new Date();
+					Transaction t = new Transaction(current,u,total,tendered,required);
+					trans.add(t);
+					togglePay();
+					JButton[] buttons = {btnPay,btnClear};
+					toggle(buttons);
+					printer.println(cart.toString("PROCESSED"));
+					System.out.println(cart.toString("COMPLETE"));
+					cart.clear();
+					totalAmt.setText(fmt.format(cart.getTotal()));
+					tenderedAmt.setText("0.00");
+					requiredAmt.setText(fmt.format(cart.getTotal()));
+				} catch (ParseException e1) {
+					e1.printStackTrace();
 				}
 			}
 		});
 		
-		usrBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				User oldUser = user;
-				user = new User();
-				while(oldUser.getName().equals(user.getName())) {
-					user = new User();
-				}
-				Boolean userFound = false;
-				for(int i = 0; i < users.size(); i++) {
-					if(user.getName().equals(users.get(i).getName())) {
-						user = users.get(i);
-						userFound = true;
-						break;
+		tenderedAmt.getDocument().addDocumentListener(new DocumentListener() {
+
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				updateFields();
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				updateFields();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				updateFields();
+			}
+
+			private void updateFields() {
+				if(!tenderedAmt.getText().isEmpty()) {
+					try {
+						Double total = fmt.parse(totalAmt.getText()).doubleValue();
+						Double required = total - Double.parseDouble(tenderedAmt.getText());
+						requiredAmt.setText(fmt.format(required));
+						if(required > 0) {
+							requiredAmt.setBorder(BorderFactory.createLineBorder(Color.red));
+							btnProcess.setEnabled(false);
+						} else {
+							requiredAmt.setBorder(BorderFactory.createLineBorder(Color.green));
+							btnProcess.setEnabled(true);
+						}
+					} catch (NumberFormatException | ParseException e) {
+						e.printStackTrace();
 					}
 				}
-				
-				if(!userFound) {
-					users.add(user);
-				}
-				usrBtn.setText(user.getName());
 			}
+			
 		});
+		
 		Timer clock = new Timer(1000, new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				date = new Date();
+				Date date = new Date();
 				timeStamp.setText(dateFmt.format(date));
 			}
 		});
@@ -570,60 +550,126 @@ public class PoS {
         frame.addWindowListener(new WindowListener() {
 
 			@Override
-			public void windowActivated(WindowEvent e) {
+			public void windowActivated(WindowEvent arg0) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void windowClosed(WindowEvent e) {
+			public void windowClosed(WindowEvent arg0) {
+			}
+
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				printer.println(trans.toString());
+				System.out.println(trans.toString());
+				printer.close();
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent arg0) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void windowClosing(WindowEvent e) {
-				writer.print(trans.toString());
-				writer.close();
-			}
-
-			@Override
-			public void windowDeactivated(WindowEvent e) {
+			public void windowDeiconified(WindowEvent arg0) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void windowDeiconified(WindowEvent e) {
+			public void windowIconified(WindowEvent arg0) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void windowIconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void windowOpened(WindowEvent e) {
+			public void windowOpened(WindowEvent arg0) {
 				// TODO Auto-generated method stub
 				
 			}
         	
         });
 	}
-	
-	/**
-	 * Toggle Visibility
-	 * Toggles the visibility of a JComponent, if off, turn on, if on, turn off.
-	 * @param j the JComponent to toggle
-	 */
-	void toggleVisibility(JComponent j) {
-		if(!j.isVisible()) {
-			j.setVisible(true);
-		} else {
-			j.setVisible(false);
+
+	protected void togglePay() {
+		JComponent[] jcomps = {btnPay,btnProcess,btnCancel,lblTendered,tenderedAmt,lblRequired,requiredAmt};
+		toggleVisibility(jcomps);
+		JButton[] buttons = {btnAdd,btnClear,btnProcess};
+		toggle(buttons);
+	}
+
+	private void toggle(JButton[] buttons) {
+		for(JButton b : buttons) {
+			if(b.isEnabled()) {
+				b.setEnabled(false);
+			} else {
+				b.setEnabled(true);
+			}
 		}
+	}
+
+	private void setUser(String name) {
+		u = new User(name);
+		
+		userBtn.setText(name);
+		userLbl.setText(name);
+		userDrop.setText(name);
+	}
+
+	private void show() {
+		JComponent[] jcomps = new JComponent[0];
+		toggleVisibility(appSettings.getComponents().toArray(jcomps));
+	}
+
+	private void setUser() {
+		u = new User(pickRandomName(u.getName()));
+		
+		userBtn.setText(u.getName());
+		userLbl.setText(u.getName());
+		userDrop.setText(u.getName());
+	}
+
+	private String pickRandomName(String old) {
+		int r = random(names.length);
+		
+		while(names[r].equals(old)) {
+			r = random(names.length);
+		}
+		
+		return names[r];
+	}
+
+	private int random(int n) {
+		return (int) (Math.random() * n);
+	}
+	
+	private void toggleVisibility(JComponent[] jcomps) {
+		for(JComponent j : jcomps) {
+			if(j.isVisible()) {
+				j.setVisible(false);
+			} else {
+				j.setVisible(true);
+			}
+		}
+	}
+
+	private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
 	}
 }

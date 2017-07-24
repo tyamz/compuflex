@@ -1,156 +1,155 @@
-package compuflexPosSwing;
+package posSwing;
 
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-/**
- * Cart Class
- * This class contains the product list, quantity of those products in the cart, and a product table GUI to display the cart graphically.
- * @author Thomas Yamakaitis
- */
-class Cart extends TableBuilder {
-	ArrayList<Product> products = new ArrayList<>(); // Holds the products themselves
-	ArrayList<Integer> quantities = new ArrayList<>(); // Holds the quantities themselves
-	Object[] columns = {"Description","Price","Quantity","Total"}; // Column Identifiers
-	Double total;
-	int cartId = 1;
-	
-	/**
-	 * Default Cart Constructor
-	 * Runs the setTableStyle method to initialize Table Styles and Columns
-	 */
+public class Cart {
+	private JTable items = new JTable();
+	private DefaultTableModel itemTable;
+	private final String[] itemList = {"Macadamia", "Hazelnut", "Almond", "Peanut", "Walnut", "Pistachio", "Pecan", "Brazil"};
+	private final Double[] priceList = {2.00, 1.90, 1.31, 0.85, 1.12, 1.53, 1.25, 1.75};
+	private final Object[] columns = {"Description", "Price", "Quantity", "Total"};
+	private final DecimalFormat fmt = new DecimalFormat("$#,##0.00;$-#,##0.00");
+	private Double total = 0.00;
+	private int count = 1;
+
 	Cart() {
-		setTableStyle(this.columns);
+		itemTable = new DefaultTableModel();
+		itemTable.setColumnIdentifiers(columns);
+	}
+	
+	Cart(Item[] items) {
+		itemTable = new DefaultTableModel();
+		itemTable.setColumnIdentifiers(columns);
+		for(Item i : items) {
+			Object[] row = new Object[4];
+			row[0] = i.getName();
+			row[1] = fmt.format(i.getPrice());
+			row[2] = i.getQuantity();
+			row[3] = fmt.format(i.getTotal());
+			itemTable.addRow(row);
+		}
+		this.items.setModel(itemTable);
+	}
+	
+	Cart(ArrayList<Item> items) {
+		itemTable = new DefaultTableModel();
+		itemTable.setColumnIdentifiers(columns);
+		for(Item i : items) {
+			Object[] row = new Object[4];
+			row[0] = i.getName();
+			row[1] = fmt.format(i.getPrice());
+			row[2] = i.getQuantity();
+			row[3] = fmt.format(i.getTotal());
+			itemTable.addRow(row);
+		}
+		this.items.setModel(itemTable);
 	}
 
 	/**
-	 * Add Product
-	 * Searches for the product in the product list, if found, it will increase the quantity, otherwise it will add the product to the products list.
-	 * No duplicate items in the cart, one item with a variable quantity. Afterwards, it re-renders the table.
-	 * @param p the product to be added
+	 * @return the items
 	 */
-	void addProduct(Product p) {
-		Boolean prodFound = false; // Flag (default: false)
+	public JTable getItems() {
+		return items;
+	}
+
+	/**
+	 * @return the fmt
+	 */
+	public DecimalFormat getFmt() {
+		return fmt;
+	}
+
+	/**
+	 * @param items the items to set
+	 */
+	public void setItems(JTable items) {
+		this.items = items;
+	}
+
+	public void add(Item i) {
+		Object[] row = new Object[4];
+		row[0] = i.getName();
+		row[1] = fmt.format(i.getPrice());
+		row[2] = i.getQuantity();
+		row[3] = fmt.format(i.getTotal());
+		total += i.getPrice();
+		itemTable.addRow(row);
+		items.setModel(itemTable);
+	}
+	
+	public void addItem() throws ParseException {
+		int choice = random(itemList.length);
+		Item item = new Item(itemList[choice],priceList[choice]);
+		Boolean itemExists = false;
 		
-		// Runs through the product list to search for the product by product name, if it's found, flag will be set to true.
-		for(int i = 0; i < products.size(); i++) {
-			if(this.products.get(i).getName().equals(p.getName())) {
-				this.quantities.set(i, this.quantities.get(i) + 1);
-				this.tableModel.setValueAt(this.quantities.get(i), i, 2);
-				prodFound = true;
-				break;
+		for(int i = 0; i < itemTable.getRowCount(); i++) {
+			if(((String) itemTable.getValueAt(i, 0)).equals(item.getName())) {
+				itemExists = true;
+				int q = (int) itemTable.getValueAt(i, 2);
+				itemTable.setValueAt(++q, i, 2);
+				Double itemPrice = fmt.parse((String) itemTable.getValueAt(i, 1)).doubleValue();
+				itemTable.setValueAt(fmt.format(itemPrice * q), i, 3);
+				resetTotal();
 			}
 		}
 		
-		// Runs only if the specified product in the argument is not found in the products list
-		if(!prodFound) {
-			this.products.add(p);
-			this.quantities.add(1);
+		items.setModel(itemTable);
+		
+		if(!itemExists) {
+			add(item);
 		}
+	}
+
+	private int random(int n) {
+		return (int) (Math.random() * n);
 	}
 	
 	/**
-	 * Remove Product
-	 * 
-	 * Stores the selected (highlighted) rows' indices from the GUI Product Table in rows array
-	 * Removes all entries at those indices in the products and quantities which are the same across the board
-	 * products[i] <=> quantities[i] <=> rows[i] (the values are not the same, but they're mapped to eachother indirectly by index number)
-	 * Re-renders the table, afterwards.
+	 * @return the total
 	 */
-	void removeProduct() {
-		int[] rows = this.table.getSelectedRows();
-		
-		// Remove all rows and entries that were selected (highlighted) in the GUI Product Table
-		for(int i = rows.length - 1; i >= 0; i--) {
-			products.remove(rows[i]);
-			quantities.remove(rows[i]);
-		}
+	public Double getTotal() {
+		return this.total;
 	}
-	
+
 	/**
-	 * Clear All
-	 * Clears the products and quantities list and re-renders the table.
+	 * @param total the total to set
+	 * @throws ParseException 
 	 */
-	void clearAll(String status) {
-		System.out.println(this.toString(status));
-		products.clear(); // Clear Products
-		quantities.clear(); // Clear Quantities
-	}
-	
-	/**
-	 * Render the Table
-	 * Creates rows from the products and quantities lists.
-	 */
-	void renderTable() {		
-		// Re-initialize the Table Model
-		this.tableModel = new DefaultTableModel();
-		
-		// Set the Table Style
-		setTableStyle(this.columns);
-		
-		// Create a row from each list entry for product and quantity and add it to the Table Model
-		for(int i = 0; i < products.size(); i++) {
-			Object[] row = new Object[4];
-			
-			row[0] = products.get(i).getName();
-			row[1] = fmt.format(products.get(i).getPrice());
-			row[2] = quantities.get(i);
-			row[3] = fmt.format(products.get(i).getPrice() * quantities.get(i));
-			
-			this.tableModel.addRow(row);
+	public Double resetTotal() throws ParseException {
+		total = 0.00;
+		for(int i = 0; i < itemTable.getRowCount(); i++) {
+			total += fmt.parse((String) itemTable.getValueAt(i, 3)).doubleValue();
 		}
-		
-		this.table.setModel(this.tableModel);
-	}
-	
-	/**
-	 * Get Total
-	 * @return total cost of all product(s) in cart
-	 */
-	Double getTotal() {
-		this.total = 0.00;
-		
-		for(int i = 0; i < products.size(); i++) {
-			total += (products.get(i).getPrice() * quantities.get(i));
-		}
-		
 		return total;
 	}
-	
+
+	public void clear() throws ParseException {
+		itemTable = new DefaultTableModel();
+		itemTable.setColumnIdentifiers(columns);
+		items.setModel(itemTable);
+		resetTotal();
+	}
+
 	/**
-	 * Get ID
-	 * @return ID of Cart / Transaction
+	 * To String
 	 */
-	int getId() {
-		return this.cartId;
-	}
-	
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		String plusLine = "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\r\n";
-		sb.append(plusLine + String.format("+ %89s +\r\n", "Cart ID#: " + this.cartId) +
-				plusLine + String.format("+ %20s + %20s + %20s + %20s +\r\n", "Description", "Price", "Quantity", "Total") + plusLine);
-		
-		for(int i = 0; i < products.size(); i++) {
-			sb.append(String.format("+ %20s + %20s + %20s + %20s +\r\n", products.get(i).getName(), fmt.format(products.get(i).getPrice()), quantities.get(i), fmt.format(products.get(i).getPrice() * quantities.get(i))));
-		}
-		
-		sb.append(plusLine + String.format("+ %89s +\r\n", "Total: " + fmt.format(this.getTotal())) + plusLine);
-		return sb.toString();
-	}
-	
 	public String toString(String s) {
 		StringBuilder sb = new StringBuilder();
 		String plusLine = "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\r\n";
-		sb.append(plusLine + String.format("+ %89s +\r\n", "(" + s + ") " + "Cart ID#: " + this.cartId) +
+		sb.append(plusLine + String.format("+ %89s +\r\n", "(" + s + ") " + "Cart ID#: " + count) +
 				plusLine + String.format("+ %20s + %20s + %20s + %20s +\r\n", "Description", "Price", "Quantity", "Total") + plusLine);
 		
-		for(int i = 0; i < products.size(); i++) {
-			sb.append(String.format("+ %20s + %20s + %20s + %20s +\r\n", products.get(i).getName(), fmt.format(products.get(i).getPrice()), quantities.get(i), fmt.format(products.get(i).getPrice() * quantities.get(i))));
+		for(int i = 0; i < items.getRowCount(); i++) {
+			sb.append(String.format("+ %20s + %20s + %20d + %20s +\r\n", (String) items.getValueAt(i, 0), (String) items.getValueAt(i, 1), (int) items.getValueAt(i, 2), (String) items.getValueAt(i, 3)));
 		}
 		
 		sb.append(plusLine + String.format("+ %89s +\r\n", "Total: " + fmt.format(this.getTotal())) + plusLine);
+		if(s.equals("COMPLETE")) { count++; }
 		return sb.toString();
 	}
 }

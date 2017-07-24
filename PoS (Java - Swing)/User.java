@@ -1,33 +1,34 @@
-package compuflexPosSwing;
+package posSwing;
 
-/**
- * User Class
- * Defines the user(s) viewing and processing the transaction(s) in the cart.
- * @author Thomas Yamakaitis
- */
 class User {
-	String name = "Tommy";
+	String name;
 	
-	User() {
-		pickName();
+	/**
+	 * Default Constuctor
+	 */
+	User() { }
+	
+	/**
+	 * User Constructor
+	 * @param n the name of the User.
+	 */
+	User(String n) {
+		this.name = n;
 	}
 	
 	/**
 	 * Get Name
-	 * @return user's name
+	 * @return the name String of the User.
 	 */
-	public String getName() {
-		return this.name;
+	String getName() {
+		return name;
 	}
 	
 	/**
-	 * Pick Name
-	 * Picks a new random name for the user
+	 * Set Name
+	 * @param name the name of the User.
 	 */
-	void pickName() {
-		String[] names = {"Spider-Man","Captain America","Thor","The Incredible Hulk","Black Widow","Iron Man","Deadpool"};
-		int choice = (int) (Math.random() * names.length);
-		
-		this.name = names[choice];
+	void setName(String name) {
+		this.name = name;
 	}
 }

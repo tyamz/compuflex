@@ -1,89 +1,97 @@
-package compuflexPosSwing;
+package posSwing;
 
 import java.util.Date;
 
-/**
- * Transaction Class
- * This class stores transaction information such as the date/time of transaction, the user who processed it,
- * the total cost of the transaction, the total amount tendered for the transaction, and the amount of change
- * returned to the customer.
- * @author Thomas Yamakaitis
- */
 class Transaction {
-	Date stamp;
-	User user;
-	Double total;
-	Double tendered;
-	Double change;
-	int transId;
-	
-	/**
-	 * Default Constructor
-	 */
-	Transaction() { }
+	private Date stamp;
+	private User user;
+	private Double total;
+	private Double tendered;
+	private Double change;
 	
 	/**
 	 * Transaction Constructor
-	 * @param s the timestamp of the transaction
-	 * @param u the user who processed the transaction
-	 * @param tot the total cost of the transaction
-	 * @param tend the total amount tendered for the transaction
-	 * @param ch the total amount of change returned for the transaction
+	 * @param stamp
+	 * @param user
+	 * @param total
+	 * @param tendered
+	 * @param change
 	 */
-	Transaction(Date s, User u, Double tot, Double tend, Double ch, int id) {
-		this.stamp = s;
-		this.user = u;
-		this.total = tot;
-		this.tendered = tend;
-		this.change = ch;
-		this.transId = id;
+	public Transaction(Date stamp, User user, Double total, Double tendered, Double change) {
+		this.stamp = stamp;
+		this.user = user;
+		this.total = total;
+		this.tendered = tendered;
+		this.change = change;
 	}
-	
+
 	/**
-	 * Get Time Stamp
-	 * @return the timestamp of the transactio
+	 * @return the stamp
 	 */
-	Date getStamp() {
-		return this.stamp;
+	public Date getStamp() {
+		return stamp;
 	}
-	
+
 	/**
-	 * Get User
-	 * @return the user who processed the transaction
+	 * @return the user
 	 */
-	User getUser() {
-		return this.user;
+	public User getUser() {
+		return user;
 	}
-	
+
 	/**
-	 * Get Total
-	 * @return the total cost of the transaction
+	 * @return the total
 	 */
-	Double getTotal() {
-		return this.total;
+	public Double getTotal() {
+		return total;
 	}
-	
+
 	/**
-	 * Get Tendered
-	 * @return the total amount tendered for the transaction
+	 * @return the tendered
 	 */
-	Double getTendered() {
-		return this.tendered;
+	public Double getTendered() {
+		return tendered;
 	}
-	
+
 	/**
-	 * Get Change
-	 * @return the total amount of change returned for the transaction
+	 * @return the change
 	 */
-	Double getChange() {
-		return this.change;
+	public Double getChange() {
+		return change;
 	}
-	
+
 	/**
-	 * Get ID
-	 * @return ID of Cart/Transaction
+	 * @param stamp the stamp to set
 	 */
-	int getId() {
-		return this.transId;
+	public void setStamp(Date stamp) {
+		this.stamp = stamp;
+	}
+
+	/**
+	 * @param user the user to set
+	 */
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	/**
+	 * @param total the total to set
+	 */
+	public void setTotal(Double total) {
+		this.total = total;
+	}
+
+	/**
+	 * @param tendered the tendered to set
+	 */
+	public void setTendered(Double tendered) {
+		this.tendered = tendered;
+	}
+
+	/**
+	 * @param change the change to set
+	 */
+	public void setChange(Double change) {
+		this.change = change;
 	}
 }
