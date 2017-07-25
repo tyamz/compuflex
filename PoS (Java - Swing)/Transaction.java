@@ -2,7 +2,7 @@ package posSwing;
 
 import java.util.Date;
 
-class Transaction {
+public class Transaction {
 	private Date stamp;
 	private User user;
 	private Double total;

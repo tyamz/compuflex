@@ -1,6 +1,6 @@
 package posSwing;
 
-class User {
+public class User {
 	String name;
 	
 	/**

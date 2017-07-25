@@ -8,7 +8,7 @@ import java.util.Properties;
 
 import javax.swing.JComponent;
 
-class Settings {
+public class Settings {
 	private ArrayList<JComponent> components = new ArrayList<>();
 	private int userDisplayOption;
 	private Boolean popUp;

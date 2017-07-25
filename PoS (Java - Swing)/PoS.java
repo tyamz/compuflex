@@ -12,6 +12,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -26,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -39,6 +41,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import net.miginfocom.swing.MigLayout;
+
+import tyamz.FileFunctions;
 
 public class PoS {
 
@@ -100,135 +104,181 @@ public class PoS {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
-		u = new User("Default User");
-		cart = new Cart();
-		trans = new TransactionRecord();
-		fmt = cart.getFmt();
-		dateFmt = trans.getDateFmt();
-		try {
-			printer = new PrintWriter(new File("Compuflex_PoS_Swing_2.0.log"));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	private void initialize() {		
+		File f = new File("Compuflex_PoS_Swing_2.0.properties");
+		
+		if(f.isFile()) {
+			u = new User("Default User");
+			cart = new Cart();
+			trans = new TransactionRecord();
+			fmt = cart.getFmt();
+			dateFmt = trans.getDateFmt();
+			try {
+				printer = new PrintWriter(new File("Compuflex_PoS_Swing_2.0.log"));
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			frame = new JFrame();
+			frame.setBounds(100, 100, 721, 488);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.getContentPane().setLayout(new MigLayout("", "[grow]", "[grow]"));
+			
+			JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+			frame.getContentPane().add(tabbedPane, "cell 0 0,grow");
+			
+			JPanel cartPanel = new JPanel();
+			tabbedPane.addTab("Cart", null, cartPanel, null);
+			cartPanel.setLayout(new MigLayout("", "[grow]", "[][grow][grow][grow]"));
+			
+			btnAdd = new JButton("Add");
+			btnAdd.setEnabled(false);
+			cartPanel.add(btnAdd, "flowx,cell 0 0");
+			
+			btnClear = new JButton("Clear");
+			btnClear.setEnabled(true);
+			cartPanel.add(btnClear, "cell 0 0");
+			
+			JScrollPane scrollPane = new JScrollPane();
+			cartPanel.add(scrollPane, "cell 0 1,growx,aligny top");
+			
+			itemTable = cart.getItems();
+			scrollPane.setViewportView(itemTable);
+			
+			JPanel panel = new JPanel();
+			cartPanel.add(panel, "cell 0 2,grow");
+			panel.setLayout(new MigLayout("", "[][][][][grow][][][][][][][][][][][][][][][][][][]", "[][]"));
+			
+			JLabel lblTotal = new JLabel("Total:");
+			panel.add(lblTotal, "cell 0 0");
+			
+			totalAmt = new JLabel("$0.00");
+			panel.add(totalAmt, "cell 1 0");
+			
+			lblTendered = new JLabel("Tendered:");
+			panel.add(lblTendered, "cell 3 0,alignx trailing");
+			
+			tenderedAmt = new JTextField();
+			tenderedAmt.setHorizontalAlignment(SwingConstants.RIGHT);
+			tenderedAmt.setText("0.00");
+			panel.add(tenderedAmt, "cell 4 0,growx");
+			tenderedAmt.setColumns(10);
+			
+			lblRequired = new JLabel("Required:");
+			panel.add(lblRequired, "cell 6 0");
+			
+			requiredAmt = new JLabel("$0.00");
+			panel.add(requiredAmt, "cell 7 0");
+			
+			btnProcess = new JButton("Process");
+			btnProcess.setEnabled(false);
+			panel.add(btnProcess, "cell 21 0");
+			
+			btnCancel = new JButton("Cancel");
+			panel.add(btnCancel, "flowx,cell 22 0");
+			
+			btnPay = new JButton("Pay");
+			btnPay.setVisible(false);
+			btnPay.setEnabled(false);
+			panel.add(btnPay, "cell 22 0");
+			
+			JPanel transPanel = new JPanel();
+			tabbedPane.addTab("Trans", null, transPanel, null);
+			transPanel.setLayout(new MigLayout("", "[grow]", "[grow]"));
+			
+			JScrollPane transScrollPane = new JScrollPane();
+			transPanel.add(transScrollPane, "cell 0 0,grow");
+			
+			transTable = trans.getTransactions();
+			transScrollPane.setViewportView(transTable);
+			
+			JPopupMenu popupMenu = new JPopupMenu();
+			addPopup(frame, popupMenu);
+			
+			settingsMenu = new JMenuItem("Settings");
+			popupMenu.add(settingsMenu);
+			
+			JMenuBar menuBar = new JMenuBar();
+			frame.setJMenuBar(menuBar);
+			
+			userDrop = new JMenu(u.getName());
+			menuBar.add(userDrop);
+			
+			labelPanel = new JPanel();
+			menuBar.add(labelPanel);
+			labelPanel.setLayout(new MigLayout("", "[]", "[]"));
+			
+			userLbl = new JLabel(u.getName());
+			labelPanel.add(userLbl, "cell 0 0");
+			userLbl.setHorizontalAlignment(SwingConstants.CENTER);
+			
+			buttonPanel = new JPanel();
+			menuBar.add(buttonPanel);
+			buttonPanel.setLayout(new MigLayout("", "[grow]", "[grow]"));
+			
+			userBtn = new JButton(u.getName());
+			buttonPanel.add(userBtn, "flowx,cell 0 0,alignx left,aligny center");
+			
+			Date date = new Date();
+			
+			panel_1 = new JPanel();
+			menuBar.add(panel_1);
+			panel_1.setLayout(new MigLayout("", "[]", "[]"));
+			timeStamp = new JLabel(dateFmt.format(date));
+			panel_1.add(timeStamp, "cell 0 0");
+			
+			/* CODE BEGINS HERE */
+			togglePay();
+			JComponent[] jcomps = {buttonPanel,labelPanel,userDrop};
+			toggleVisibility(jcomps);
+			
+			setUser();
+			appSettings = new Settings();
+			setSettings();
+			show();
+		} else {
+			createProperties();
 		}
-		frame = new JFrame();
-		frame.setBounds(100, 100, 721, 488);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new MigLayout("", "[grow]", "[grow]"));
-		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		frame.getContentPane().add(tabbedPane, "cell 0 0,grow");
-		
-		JPanel cartPanel = new JPanel();
-		tabbedPane.addTab("Cart", null, cartPanel, null);
-		cartPanel.setLayout(new MigLayout("", "[grow]", "[][grow][grow][grow]"));
-		
-		btnAdd = new JButton("Add");
-		btnAdd.setEnabled(false);
-		cartPanel.add(btnAdd, "flowx,cell 0 0");
-		
-		btnClear = new JButton("Clear");
-		btnClear.setEnabled(true);
-		cartPanel.add(btnClear, "cell 0 0");
-		
-		JScrollPane scrollPane = new JScrollPane();
-		cartPanel.add(scrollPane, "cell 0 1,growx,aligny top");
-		
-		itemTable = cart.getItems();
-		scrollPane.setViewportView(itemTable);
-		
-		JPanel panel = new JPanel();
-		cartPanel.add(panel, "cell 0 2,grow");
-		panel.setLayout(new MigLayout("", "[][][][][grow][][][][][][][][][][][][][][][][][][]", "[][]"));
-		
-		JLabel lblTotal = new JLabel("Total:");
-		panel.add(lblTotal, "cell 0 0");
-		
-		totalAmt = new JLabel("$0.00");
-		panel.add(totalAmt, "cell 1 0");
-		
-		lblTendered = new JLabel("Tendered:");
-		panel.add(lblTendered, "cell 3 0,alignx trailing");
-		
-		tenderedAmt = new JTextField();
-		tenderedAmt.setHorizontalAlignment(SwingConstants.RIGHT);
-		tenderedAmt.setText("0.00");
-		panel.add(tenderedAmt, "cell 4 0,growx");
-		tenderedAmt.setColumns(10);
-		
-		lblRequired = new JLabel("Required:");
-		panel.add(lblRequired, "cell 6 0");
-		
-		requiredAmt = new JLabel("$0.00");
-		panel.add(requiredAmt, "cell 7 0");
-		
-		btnProcess = new JButton("Process");
-		btnProcess.setEnabled(false);
-		panel.add(btnProcess, "cell 21 0");
-		
-		btnCancel = new JButton("Cancel");
-		panel.add(btnCancel, "flowx,cell 22 0");
-		
-		btnPay = new JButton("Pay");
-		btnPay.setVisible(false);
-		btnPay.setEnabled(false);
-		panel.add(btnPay, "cell 22 0");
-		
-		JPanel transPanel = new JPanel();
-		tabbedPane.addTab("Trans", null, transPanel, null);
-		transPanel.setLayout(new MigLayout("", "[grow]", "[grow]"));
-		
-		JScrollPane transScrollPane = new JScrollPane();
-		transPanel.add(transScrollPane, "cell 0 0,grow");
-		
-		transTable = trans.getTransactions();
-		transScrollPane.setViewportView(transTable);
-		
-		JPopupMenu popupMenu = new JPopupMenu();
-		addPopup(frame, popupMenu);
-		
-		settingsMenu = new JMenuItem("Settings");
-		popupMenu.add(settingsMenu);
-		
-		JMenuBar menuBar = new JMenuBar();
-		frame.setJMenuBar(menuBar);
-		
-		userDrop = new JMenu(u.getName());
-		menuBar.add(userDrop);
-		
-		labelPanel = new JPanel();
-		menuBar.add(labelPanel);
-		labelPanel.setLayout(new MigLayout("", "[]", "[]"));
-		
-		userLbl = new JLabel(u.getName());
-		labelPanel.add(userLbl, "cell 0 0");
-		userLbl.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		buttonPanel = new JPanel();
-		menuBar.add(buttonPanel);
-		buttonPanel.setLayout(new MigLayout("", "[grow]", "[grow]"));
-		
-		userBtn = new JButton(u.getName());
-		buttonPanel.add(userBtn, "flowx,cell 0 0,alignx left,aligny center");
-		
-		Date date = new Date();
-		
-		panel_1 = new JPanel();
-		menuBar.add(panel_1);
-		panel_1.setLayout(new MigLayout("", "[]", "[]"));
-		timeStamp = new JLabel(dateFmt.format(date));
-		panel_1.add(timeStamp, "cell 0 0");
-		
-		/* CODE BEGINS HERE */
-		togglePay();
-		JComponent[] jcomps = {buttonPanel,labelPanel,userDrop};
-		toggleVisibility(jcomps);
-		
-		setUser();
-		appSettings = new Settings();
-		setSettings();
-		show();
+	}
+
+	private void createProperties() {
+		File f = new File("Compuflex_PoS_Swing_2.0.properties");
+		File d = new File("default.properties");
+		JOptionPane.showMessageDialog(null, "Oops! It looks like \"Compuflex_PoS_Swing_2.0.properties\" does not exist!\r\nGenerating the file now...\r\nPlease re-open the application,\r\nThank you!");
+		if(d.isFile()) {
+			try {
+				FileFunctions.copyFile(d, f);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				PrintWriter printDef = new PrintWriter(new File("default.properties"));
+				PrintWriter printProps = new PrintWriter(new File("Compuflex_PoS_Swing_2.0.properties"));
+				printDef.println("# Compuflex - Point of Sale (PoS) - Swing Version 2.0\r\n" + 
+						"# Default Properties File\r\n" + 
+						"\r\n" + 
+						"! Pay Button Pop Up (pay in current window = false; pay in pop up window = true) [default: false].\r\n" + 
+						"popUp = false\r\n" + 
+						"\r\n" + 
+						"! User Display Options (button = 0; label = 1; dropdown = 2) [default: 0].\r\n" + 
+						"userDisplay = 0");
+				printProps.println("# Compuflex - Point of Sale (PoS) - Swing Version 2.0\r\n" + 
+						"# Main Properties File\r\n" + 
+						"\r\n" + 
+						"! Pay Button Pop Up (pay in current window = false; pay in pop up window = true) [default: false].\r\n" + 
+						"popUp = false\r\n" + 
+						"\r\n" + 
+						"! User Display Options (button = 0; label = 1; dropdown = 2) [default: 0].\r\n" + 
+						"userDisplay = 0");
+				printDef.close();
+				printProps.close();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private void setSettings() {
@@ -403,13 +453,13 @@ public class PoS {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(appSettings.isPopUp()) {
-					@SuppressWarnings("unused")
+					JButton[] buttons = {btnAdd,btnClear,btnPay};
+					toggle(buttons);
 					PayWindow pw = new PayWindow(cart,trans,u);
 					pw.frame.addWindowListener(new WindowListener() {
 
 						@Override
 						public void windowActivated(WindowEvent arg0) {
-							// TODO Auto-generated method stub
 							
 						}
 
@@ -418,46 +468,38 @@ public class PoS {
 							try {
 								printer.println(cart.toString("PROCESSED"));
 								System.out.println(cart.toString("COMPLETE"));
-								JButton[] buttons = {btnPay,btnClear};
-								toggle(buttons);
+								btnAdd.setEnabled(true);
 								cart.clear();
 								totalAmt.setText(fmt.format(cart.getTotal()));
 								tenderedAmt.setText("0.00");
 								requiredAmt.setText(fmt.format(cart.getTotal()));
 							} catch (ParseException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						}
 						
-
 						@Override
 						public void windowClosing(WindowEvent arg0) {
-							// TODO Auto-generated method stub
 							
 						}
 
 						@Override
 						public void windowDeactivated(WindowEvent arg0) {
-							// TODO Auto-generated method stub
 							
 						}
 
 						@Override
 						public void windowDeiconified(WindowEvent arg0) {
-							// TODO Auto-generated method stub
 							
 						}
 
 						@Override
 						public void windowIconified(WindowEvent arg0) {
-							// TODO Auto-generated method stub
 							
 						}
 
 						@Override
 						public void windowOpened(WindowEvent arg0) {
-							// TODO Auto-generated method stub
 							
 						}
 						
