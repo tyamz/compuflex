@@ -23,6 +23,7 @@ This is a sample Point of Sale (PoS) System made with JavaFX for the Compuflex C
  - [Compuflex_PoS_JavaFX_1.3.jar](/PoS%20(Java%20-%20JavaFX)/Compuflex_PoS_JavaFX_1.3.jar) ~ an executable version of this whole package.
 
 ## Changes
+### (July 27th, 2017 - 11:45 AM ~ Thomas Yamakaitis) v1.2 to v1.3
  - Automatically generates the properties file(s), if they do not exist.
  - Settings class created to manage the properties and settings a bit better.
  - Overall updates to increase efficiency and readability of the code.
