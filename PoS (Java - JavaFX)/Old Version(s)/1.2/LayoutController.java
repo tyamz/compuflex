@@ -1,5 +1,6 @@
 package application;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,6 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 import javafx.animation.Animation;
@@ -18,6 +20,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -25,7 +29,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -46,7 +49,6 @@ import javafx.util.Duration;
 
 public class LayoutController implements Initializable {
 	Cart cart = new Cart();
-	TransactionRecord trans = new TransactionRecord();
 	DecimalFormat fmt = new DecimalFormat("$#,##0.00;$-#,##0.00");
 	DateFormat dateFmt = new SimpleDateFormat("EEEE, MMM d, yyyy h:mm:ss a");
 	String[] names = {"Tommy","Spider-Man","Captain America","Thor","The Incredible Hulk","Black Widow","Iron Man","Deadpool"};
@@ -56,17 +58,16 @@ public class LayoutController implements Initializable {
 	private PrintWriter pw;
 	private Boolean processed = false;
 	private ArrayList<MenuItem> namesMenu;
-	private Settings settings;
 	
 	/* GENERAL */
 	@FXML private AnchorPane mainAnchorPane;
+	private Properties appProps;
 	
 	/* WINDOW STAGES */
 	private Stage settingsStage;
 	private Stage payStage;
 	
 	/* TOP BAR */
-	@FXML private Node usrDisplay;
 	@FXML private Button usrBtn;
 	@FXML private Label usrLbl;
 	@FXML private MenuButton usrDrop;
@@ -83,7 +84,7 @@ public class LayoutController implements Initializable {
 	@FXML private Label totalAmt;
 	@FXML private Label reqAmt;
 	@FXML private TextField tenderedAmt;
-	@FXML private Button payBtn;
+	private Button payBtn;
 	@FXML private Button payBtnInside;
 	@FXML private Button payBtnPop;
 	@FXML private Button prcBtn;
@@ -98,6 +99,8 @@ public class LayoutController implements Initializable {
 	@FXML private TableColumn<Transaction, String> tot;
 	@FXML private TableColumn<Transaction, String> tend;
 	@FXML private TableColumn<Transaction, String> change;
+	
+	private ObservableList<Transaction> trans = FXCollections.observableArrayList();
 
 	public Button getUsrBtn() {
 		return usrBtn;
@@ -118,11 +121,7 @@ public class LayoutController implements Initializable {
 	public Cart getCart() {
 		return cart;
 	}
-	
-	public TransactionRecord getTrans() {
-		return trans;
-	}
-	
+
 	public Double getTendered() {
 		return tendered;
 	}
@@ -170,6 +169,10 @@ public class LayoutController implements Initializable {
 	public Button getClearBtn() {
 		return clearBtn;
 	}
+
+	public ObservableList<Transaction> getTrans() {
+		return trans;
+	}
 	
 	public PrintWriter getPw() {
 		return this.pw;
@@ -193,18 +196,6 @@ public class LayoutController implements Initializable {
 	
 	public ImageView getNameImage() {
 		return nameImage;
-	}
-	
-	public Settings getSettings() {
-		return settings;
-	}
-	
-	public Node getUsrDisplay() {
-		return usrDisplay;
-	}
-	
-	public void setUsrDisplay(Node n) {
-		usrDisplay = n;
 	}
 
 	/* TABLE METHODS */
@@ -251,7 +242,7 @@ public class LayoutController implements Initializable {
 	public void process(ActionEvent event) {
 		try {
 			Date stamp = new Date();
-			Transaction t = new Transaction(this.cart.getCount(),stamp,this.usr,cart.getTotal(),tendered,this.fmt.parse(reqAmt.getText()).doubleValue());
+			Transaction t = new Transaction(stamp,this.usr,cart.getTotal(),tendered,this.fmt.parse(reqAmt.getText()).doubleValue());
 			this.trans.add(t);
 			this.processed = true;
 			this.clearAll(event);
@@ -329,7 +320,7 @@ public class LayoutController implements Initializable {
 	 * Initialize the window
 	 */
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {		
+	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.usr = this.names[(int) (Math.random() * this.names.length)];
 		this.usrBtn.setText(this.usr);
 		this.usrLbl.setText(this.usr);
@@ -366,7 +357,7 @@ public class LayoutController implements Initializable {
 	
 	private void initializePrinter() {
 		try {
-			this.pw = new PrintWriter("Compuflex_PoS_JavaFX_1.3.log", "UTF-8");
+			this.pw = new PrintWriter("Compuflex_PoS_JavaFX_1.2.log", "UTF-8");
 		} catch (FileNotFoundException | UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		}
@@ -375,8 +366,6 @@ public class LayoutController implements Initializable {
 
 			@Override
 			public void handle(WindowEvent event) {
-				System.out.println(trans.toString());
-				pw.println(trans.toString());
 				pw.close();
 			}
 			
@@ -403,7 +392,7 @@ public class LayoutController implements Initializable {
 		this.price.setCellValueFactory(cellData -> cellData.getValue().itemPriceProperty());
 		this.quantity.setCellValueFactory(cellData -> cellData.getValue().itemQuantityProperty());
 		this.total.setCellValueFactory(cellData -> cellData.getValue().itemTotalProperty());
-		this.table.setItems(cart.getCartItems());
+		this.table.setItems(cart.products);
 		
 		/* TRANSACTION CELL VALUES */
 		this.stamp.setCellValueFactory(cellData -> cellData.getValue().stampProperty());
@@ -411,7 +400,7 @@ public class LayoutController implements Initializable {
 		this.tot.setCellValueFactory(cellData -> cellData.getValue().totalProperty());
 		this.tend.setCellValueFactory(cellData -> cellData.getValue().tenderedProperty());
 		this.change.setCellValueFactory(cellData -> cellData.getValue().changeProperty());
-		this.transTable.setItems(trans.getTrans());
+		this.transTable.setItems(this.trans);
 	}
 
 	private void setUpMenus() {
@@ -443,34 +432,52 @@ public class LayoutController implements Initializable {
 	}
 
 	private void initializeProperties() {
-		this.settings = new Settings();
+		try {
+			// create and load default properties
+			Properties defaultProps = new Properties();
+			FileInputStream in;
+			in = new FileInputStream("default.properties");
+			defaultProps.load(in);
+			in.close();
+	
+			// create application properties with default
+			this.appProps = new Properties(defaultProps);
+	
+			// now load properties 
+			// from last invocation
+			in = new FileInputStream("Compuflex_PoS_JavaFX_1.2.properties");
+			this.appProps.load(in);
+			in.close();
+		} catch (IOException e2) {
+			e2.printStackTrace();
+		}
 		
-		if(this.settings.isPopUp()) {
-			this.setPayBtn(this.payBtnPop);
-			this.payBtnPop.setVisible(true);
-		} else {
+		if(this.appProps.getProperty("payPop").equals("false")) {
 			this.setPayBtn(this.payBtnInside);
 			this.payBtnInside.setVisible(true);
+		} else {
+			this.setPayBtn(this.payBtnPop);
+			this.payBtnPop.setVisible(true);
 		}
 		
-		switch(this.settings.getUserDisplay()) {
+		int nameSetting = Integer.parseInt(this.appProps.getProperty("nameSetting"));
+		
+		switch(nameSetting) {
 			case 0:
-				this.setUsrDisplay(this.getUsrBtn());
+				this.usrBtn.setVisible(true);
 				break;
 			case 1:
-				this.setUsrDisplay(this.getUsrLbl());
+				this.usrLbl.setVisible(true);
 				break;
 			case 2:
-				this.setUsrDisplay(this.getUsrDrop());
+				this.usrDrop.setVisible(true);
 				break;
 			case 3:
-				this.setUsrDisplay(this.getNameImage());
+				this.nameImage.setVisible(true);
 				break;
 			default:
-				this.setUsrDisplay(this.getUsrBtn());
+				this.usrBtn.setVisible(true);
 		}
-		
-		this.getUsrDisplay().setVisible(true);
 	}
 
 	private Image textToImage(String text) {

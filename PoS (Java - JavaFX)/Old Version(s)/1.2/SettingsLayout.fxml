@@ -28,20 +28,20 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </GridPane.margin>
                      <toggleGroup>
-                        <ToggleGroup fx:id="userDisplay" />
+                        <ToggleGroup fx:id="nameSettings" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton fx:id="labels" mnemonicParsing="false" text="Labels" toggleGroup="$userDisplay" GridPane.rowIndex="2">
+                  <RadioButton fx:id="labels" mnemonicParsing="false" text="Labels" toggleGroup="$nameSettings" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </GridPane.margin>
                   </RadioButton>
-                  <RadioButton fx:id="dropdown" mnemonicParsing="false" text="Dropdown" toggleGroup="$userDisplay" GridPane.rowIndex="3">
+                  <RadioButton fx:id="dropdown" mnemonicParsing="false" text="Dropdown" toggleGroup="$nameSettings" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </GridPane.margin>
                   </RadioButton>
-                  <RadioButton fx:id="images" layoutX="20.0" layoutY="109.0" mnemonicParsing="false" text="Images" toggleGroup="$userDisplay" GridPane.rowIndex="4">
+                  <RadioButton fx:id="images" layoutX="20.0" layoutY="109.0" mnemonicParsing="false" text="Images" toggleGroup="$nameSettings" GridPane.rowIndex="4">
                      <GridPane.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </GridPane.margin>
@@ -61,10 +61,10 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </GridPane.margin>
                      <toggleGroup>
-                        <ToggleGroup fx:id="popUp" />
+                        <ToggleGroup fx:id="payBtnSettings" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton fx:id="payPop" mnemonicParsing="false" text="Pop-up Window" toggleGroup="$popUp" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <RadioButton fx:id="popup" mnemonicParsing="false" text="Pop-up Window" toggleGroup="$payBtnSettings" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </GridPane.margin>

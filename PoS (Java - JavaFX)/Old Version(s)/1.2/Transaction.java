@@ -9,14 +9,13 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Transaction {
-	int cartId;
 	StringProperty stamp;
 	StringProperty user;
 	StringProperty total;
 	StringProperty tendered;
 	StringProperty change;
-	private final DecimalFormat fmt = new DecimalFormat("$#,##0.00;$-#,##0.00");
-	private final DateFormat dateFmt = new SimpleDateFormat("EEEE, MMM d, yyyy h:mm:ss a");
+	DecimalFormat fmt = new DecimalFormat("$#,##0.00;$-#,##0.00");
+	DateFormat dateFmt = new SimpleDateFormat("EEEE, MMM d, yyyy h:mm:ss a");
 
 	/**
 	 * Transaction Constructor
@@ -26,8 +25,7 @@ public class Transaction {
 	 * @param tend the total tendered for the transaction
 	 * @param ch the amount of change returned for the transaction
 	 */
-	Transaction(int id, Date s, String u, Double tot, Double tend, Double ch) {
-		this.cartId = id;
+	Transaction(Date s, String u, Double tot, Double tend, Double ch) {
 		this.stamp = new SimpleStringProperty(this.dateFmt.format(s));
 		this.user = new SimpleStringProperty(u);
 		this.total = new SimpleStringProperty(fmt.format(tot));
@@ -35,10 +33,6 @@ public class Transaction {
 		this.change = new SimpleStringProperty(fmt.format(ch));
 	}
 
-	public int getCartId() {
-		return this.cartId;
-	}
-	
 	/**
 	 * Stamp Property
 	 * @return the stamp string property
@@ -58,7 +52,7 @@ public class Transaction {
 	 * @param stamp the string value to set stamp to
 	 */
 	public void setStamp(String stamp) {
-		this.stampProperty().set(this.dateFmt.format(stamp));
+		this.stampProperty().set(stamp);
 	}
 	
 	/**
@@ -102,7 +96,7 @@ public class Transaction {
 	 * @param total the string value to set total to
 	 */
 	public void setTotal(String total) {
-		this.totalProperty().set(this.fmt.format(total));
+		this.totalProperty().set(total);
 	}
 	
 	/**
@@ -124,7 +118,7 @@ public class Transaction {
 	 * @param tendered the string value to set tendered to
 	 */
 	public void setTendered(String tendered) {
-		this.tenderedProperty().set(this.fmt.format(tendered));
+		this.tenderedProperty().set(tendered);
 	}
 	
 	/**
@@ -146,6 +140,6 @@ public class Transaction {
 	 * @param change the string value to set change to
 	 */
 	public void setChange(String change) {
-		this.changeProperty().set(this.fmt.format(change));
+		this.changeProperty().set(change);
 	}
 }

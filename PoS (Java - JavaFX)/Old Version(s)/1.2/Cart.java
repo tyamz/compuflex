@@ -11,10 +11,9 @@ import javafx.collections.ObservableList;
  * @author Thomas Yamakaitis
  */
 class Cart {
-	private ObservableList<CartItem> cartItems = FXCollections.observableArrayList();
-	private Double total = 0.00;
-	private final DecimalFormat fmt = new DecimalFormat("$#,##0.00;$-#,##0.00");
-	private int count = 1;
+	ObservableList<CartItem> products = FXCollections.observableArrayList();
+	Double total = 0.00;
+	DecimalFormat fmt = new DecimalFormat("$#,##0.00;$-#,##0.00");
 	
 	/**
 	 * Default Constructor
@@ -31,12 +30,12 @@ class Cart {
 		int i = this.indexOf(c);
 		this.total += c.getItemPrice();
 		if(i == -1) {
-			this.cartItems.add(c);
+			this.products.add(c);
 		} else {
-			int q = this.cartItems.get(i).getItemQuantity();
-			this.cartItems.get(i).setItemQuantity(++q);
-			this.cartItems.get(i).setItemTotal(q * this.cartItems.get(i).getItemPrice());
-			this.cartItems.set(i, this.cartItems.get(i));
+			int q = this.products.get(i).getItemQuantity();
+			this.products.get(i).setItemQuantity(++q);
+			this.products.get(i).setItemTotal(q * this.products.get(i).getItemPrice());
+			this.products.set(i, this.products.get(i));
 		}
 	}
 	
@@ -46,7 +45,7 @@ class Cart {
 	 * @return the last item in the cart
 	 */
 	CartItem lastItem() {
-		return this.cartItems.get(cartItems.size() - 1);
+		return this.products.get(products.size() - 1);
 	}
 	
 	/**
@@ -55,8 +54,8 @@ class Cart {
 	 * @return the index of the CartItem in the cart, if not in the cart, return -1
 	 */
 	int indexOf(CartItem c) {
-		for(int i = 0; i < this.cartItems.size(); i++) {
-			if(c.getItemName().equals(this.cartItems.get(i).getItemName())) {
+		for(int i = 0; i < this.products.size(); i++) {
+			if(c.getItemName().equals(this.products.get(i).getItemName())) {
 				return i;
 			}
 		}
@@ -69,8 +68,7 @@ class Cart {
 	 * Clears all items from the cart and sets total to 0
 	 */
 	public void clearAll() {
-		count++;
-		this.cartItems.clear();
+		this.products.clear();
 		this.total = 0.00;
 	}
 
@@ -90,14 +88,6 @@ class Cart {
 		return this.total;
 	}
 	
-	public ObservableList<CartItem> getCartItems() {
-		return this.cartItems;
-	}
-	
-	public int getCount() {
-		return this.count;
-	}
-	
 	/**
 	 * To String
 	 * @param s status code
@@ -106,11 +96,11 @@ class Cart {
 	public String toString(String s) {
 		StringBuilder sb = new StringBuilder();
 		String plusLine = "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\r\n";
-		sb.append(plusLine + String.format("+ %89s +\r\n", "(" + s + ") " + "Cart ID#: " + count) +
+		sb.append(plusLine + String.format("+ %89s +\r\n", "(" + s + ") " + "Cart") +
 				plusLine + String.format("+ %20s + %20s + %20s + %20s +\r\n", "Description", "Price", "Quantity", "Total") + plusLine);
 		
-		for(int i = 0; i < cartItems.size(); i++) {
-			sb.append(String.format("+ %20s + %20s + %20s + %20s +\r\n", cartItems.get(i).getItemName(), fmt.format(cartItems.get(i).getItemPrice()), cartItems.get(i).getItemQuantity(), fmt.format(cartItems.get(i).getItemPrice() * cartItems.get(i).getItemQuantity())));
+		for(int i = 0; i < products.size(); i++) {
+			sb.append(String.format("+ %20s + %20s + %20s + %20s +\r\n", products.get(i).getItemName(), fmt.format(products.get(i).getItemPrice()), products.get(i).getItemQuantity(), fmt.format(products.get(i).getItemPrice() * products.get(i).getItemQuantity())));
 		}
 		
 		sb.append(plusLine + String.format("+ %89s +\r\n", "Total: " + this.getStringTotal()) + plusLine);

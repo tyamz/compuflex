@@ -10,7 +10,7 @@ import javafx.scene.layout.Pane;
  * Point of Sale (PoS) - JavaFX
  * This is a sample Point of Sale (PoS) System made with JavaFX for the Compuflex Corporation to help test various screen mapping and management software(s).
  * @author Thomas Yamakaitis
- * @version 1.3
+ * @version 1.2
  */
 public class Main extends Application {
 	public static Stage mainStage;

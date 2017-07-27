@@ -37,7 +37,7 @@ public class PayWindowLayoutController implements Initializable {
 		this.reqVal = this.totalVal - this.tendVal;
 		
 		Date date = new Date();
-		Transaction t = new Transaction(this.cart.getCount(),date,this.main.getUsr(),this.cart.getTotal(),tendVal,reqVal);
+		Transaction t = new Transaction(date,this.main.getUsr(),this.cart.getTotal(),tendVal,reqVal);
 		this.main.getTrans().add(t);
 		
 		
@@ -68,7 +68,7 @@ public class PayWindowLayoutController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.main = Main.getMainLayout();
-		this.cart = this.main.getCart();
+		this.cart = this.main.cart;
 		this.totalVal = this.cart.getTotal();
 		this.totalAmt.setText(this.fmt.format(this.totalVal));
 		this.reqVal = this.cart.getTotal() - this.tendVal;
