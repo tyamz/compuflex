@@ -2,8 +2,8 @@
 ## Point of Sale (PoS) version 2.0
 This is a new and improved sample Point of Sale (PoS) System made with Java Swing / AWT for the Compuflex Corporation to help test various screen mapping and management software(s).
 
-## NEWS
-### This is version 2.0, this may seem very similar to 1.1, however v2.0 was done from scratch because attempting to write over and in the code for 1.1 would have been much more difficult considering it was my first time using Swing / AWT. Of course, certain code snippets and naming convention(s) were reused, but overall it was basically a complete revamp. The code might not be EXTREMELY clean, but it is simpler to work with in an IDE like Eclipse, in my opinion. Besides, I finished it much faster than version 1.x.
+## News
+ This is version 2.0, this may seem very similar to 1.1, however v2.0 was done from scratch because attempting to write over and in the code for 1.1 would have been much more difficult considering it was my first time using Swing / AWT. Of course, certain code snippets and naming convention(s) were reused, but overall it was basically a complete revamp. The code might not be EXTREMELY clean, but it is simpler to work with in an IDE like Eclipse, in my opinion. Besides, I finished it much faster than version 1.x.
 
 ## File "Structure"
  - [PoS.java](/PoS%20(Java%20-%20Swing)/PoS.java) ~ main file that comprises the entire PoS system.
