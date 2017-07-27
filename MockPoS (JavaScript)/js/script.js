@@ -29,6 +29,11 @@ function add() {
     var choice = Math.floor(Math.random() * n.length);
 
     var table = document.getElementById("cart");
+
+    if(table.rows.length > 0 && !$('#pay').is(':visible')) {
+      $('#pay').fadeIn(1000);
+    }
+
     if(cartContains(n[choice])) {
         var row = document.getElementById(n[choice]);
         // Get Old Info
@@ -80,6 +85,11 @@ function remove()  {
                 }
             }
         }
+
+        if(table.rows.length == 1) {
+          $('#addBtn').fadeIn(1000);
+          $('#pay').hide();
+        }
 }
 
 // Function to clear ALL items from the cart
@@ -96,9 +106,10 @@ function clearAll() {
     document.getElementById("paidInput").value = 0.00;
     $("#paid").hide();
     $("#change").hide();
-    $("#pay").fadeIn(1000);
     $("#process").hide();
     $("#cancel").hide();
+    $('#addBtn').fadeIn(1000);
+    $('#pay').hide();
 }
 
 // Function to check if one of the item(s) has already been added to the cart, if so, increment instead of create new cart item.
@@ -135,7 +146,7 @@ function process() {
     if(totalOwed == 0 || cart[0] == null) {
         $('#empty-cart').fadeIn(1000);
         $('#empty-cart').fadeOut(3000);
-    } else if(tendered >= 0) {
+    } else {
         var table = document.getElementById("trans");
         var count = table.rows.length;
         var row = table.insertRow(count);
@@ -156,12 +167,6 @@ function process() {
         clearAll();
         $('#trans-complete').fadeIn(1000);
         $('#trans-complete').fadeOut(3000);
-    } else {
-        var paidInput = document.getElementById("paidInput")
-        while(paidInput.value < totalOwed) {
-          paidInput.value = prompt("Payment amount must be greater than or equal to: " + totalOwed, totalOwed);
-        }
-        changeInput();
     }
 }
 
@@ -171,8 +176,20 @@ function pay() {
     $("#paid").fadeIn(1000);
     $("#change").fadeIn(1000);
     $("#pay").hide();
-    $("#process").fadeIn(1000);
     $("#cancel").fadeIn(1000);
+    $('#addBtn').hide();
+}
+
+function cancel() {
+    var table = document.getElementById("cart");
+    $("#paid").hide();
+    $("#change").hide();
+    $("#pay").hide();
+    $("#cancel").hide();
+    $('#addBtn').fadeIn(1000);
+    if(table.rows.length > 0 && !$('#pay').is(':visible')) {
+      $('#pay').fadeIn(1000);
+    }
 }
 
 function changeInput() {
@@ -180,6 +197,11 @@ function changeInput() {
     var total = document.getElementById("total").innerHTML;
     var result = (total - paid) * -1;
     $('#result').html(parseFloat(result).toFixed(2));
+    if(total != 0 && result >= 0) {
+      $('#process').fadeIn(1000);
+    } else {
+      $('#process').hide();
+    }
 }
 
 // Function to change to cart page

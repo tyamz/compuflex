@@ -58,12 +58,12 @@
         <ul class="nav navbar-nav navbar-right">
           <li onClick="pay()" id="pay"><a href="#" class="green-bg"><i class="fa fa-money" aria-hidden="true"></i> Pay</a></li>
           <li onClick="process()" id="process"><a href="#" class="yellow-bg"><i class="fa fa-cogs" aria-hidden="true"></i> Process</a></li>
-          <li onClick="clearAll()" id="cancel"><a href="#" class="red-bg"><i class="fa fa-ban" aria-hidden="true"></i> Cancel</a></li>
+          <li onClick="cancel()" id="cancel"><a href="#" class="red-bg"><i class="fa fa-ban" aria-hidden="true"></i> Cancel</a></li>
         </ul>
       </div>
     </nav>
     <div class="container-fluid" id="cart-content">
-      <button type="button" class="btn btn-success" onClick="add()"><i class="fa fa-plus" aria-hidden="true"></i> Add</button>
+      <button type="button" class="btn btn-success" id="addBtn" onClick="add()"><i class="fa fa-plus" aria-hidden="true"></i> Add</button>
       <button type="button" class="btn btn-warning" onClick="remove()"><i class="fa fa-minus" aria-hidden="true"></i> Remove</button>
       <button type="button" class="btn btn-danger" onClick="clearAll()"><i class="fa fa-trash-o" aria-hidden="true"></i> Clear</button>
       <br /><br />

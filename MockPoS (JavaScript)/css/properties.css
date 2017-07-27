@@ -6,7 +6,7 @@ body {
   border: 1px solid #ddd;
 }
 
-#paid, #process, #change, #trans-content, #trans-complete, #empty-cart, #cancel {
+#pay, #paid, #process, #change, #trans-content, #trans-complete, #empty-cart, #cancel {
     display: none;
 }
 
