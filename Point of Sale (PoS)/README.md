@@ -34,7 +34,7 @@ Overview
 
 *To manually change this setting: (ONLY IN JAVAFX AND JAVA SWING VERSIONS)*
  1. ) Close the program.
- 2. ) Open the ".properties" file which has the same name as your ".jar".
+ 2. ) Open the `.properties` file which has the same name as your ".jar".
  3. ) Change "popUp = false" to "popUp = true" to turn on the pop-up pay window, or vice versa to turn it off.
  4. ) Re-open the program.
 
@@ -43,12 +43,12 @@ Overview
 
 *To manually change this setting: (ONLY IN JAVAFX AND JAVA SWING VERSIONS)*
   1. ) Close the program
-  2. ) Open the ".properties" file which has the same name as your ".jar".
+  2. ) Open the `.properties` file which has the same name as your ".jar".
   3. ) Change "userDisplay = <insert integer between 0-3 here>", if you put an integer other than 0-3, the program will use it's default. Check the "default.properties" file for a reference.
   4. ) Re-open the program.
 
 ### b.) Properties Files (ONLY IN JAVAFX AND JAVA SWING VERSIONS)
-> Java offers a built-in properties class that maps to a "Key-Value" pair in a related .properties file. For your information, if these file(s) are not in the directory where your ".jar" is located, the file(s) will be automatically generated within the application for your convenience. When you change settings in the Settings window (Refer back to "1a.) Opening the Settings Window"), after you press "Okay" or "OK", it will automatically save these settings to the .properties file. When you open the program, it will reference these settings and display the UI based on those settings. The "default.properties" file is just a default file for reference, it is okay to delete it, but the program will automatically generate it if no ".properties" file is found. The main .properties file is named based on the ".jar" file, and it is also automatically generated, if deleted.
+> Java offers a built-in properties class that maps to a "Key-Value" pair in a related `.properties` file. For your information, if these file(s) are not in the directory where your ".jar" is located, the file(s) will be automatically generated within the application for your convenience. When you change settings in the Settings window (Refer back to "1a.) Opening the Settings Window"), after you press "Okay" or "OK", it will automatically save these settings to the `.properties` file. When you open the program, it will reference these settings and display the UI based on those settings. The "default.properties" file is just a default file for reference, it is okay to delete it, but the program will automatically generate it if no `.properties` file is found. The main `.properties` file is named based on the ".jar" file, and it is also automatically generated, if deleted.
 
 ## 2.) The Cart
 > The cart stores item(s) that are to be processed into a transaction, it generates a total price based on the individual price(s) of the item(s) in the cart. (i.e. for every 1 item priced at $1.00 in the cart, $1.00 will be added to the total price). You can view the cart by clicking the "Cart" tab at the top left.
