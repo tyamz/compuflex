@@ -75,8 +75,11 @@ Overview
 
 ### i.) Processing a Transaction
 > To process a transaction, first you must add items to the cart ([*Refer back to 2i.) "Adding an item to the cart"*](#i-adding-an-item-to-the-cart)), then click the `Pay` button located at the bottom right corner.
+
 > Depending on your settings, either a pop-up window will appear or fields will appear within the same window. ([*Refer to 3ii.) "Payment Fields"*](#ii-payment-fields)).
+
 > Next, you will enter a ***NUMERIC*** value into the `Tendered` text field. The `Tendered` amount must be *greater than or equal to* the `Total` amount, which means the `Required` amount must be *`$0.00` or LESS* in order to continue.
+
 > Once those conditions are met, the `Process` button will be enabled and you can click it to process the transaction. This will store a transaction in the transaction record with the current time and user, as well as the values of the fields  ([*Refer to 3ii.) "Payment Fields"*](#ii-payment-fields)). This will also clear the cart and reset all fields to default or `$0.00`. This will also hide the `Tendered` and `Required` and show the `Pay` button once again.
 
 ### ii.) Payment Fields
