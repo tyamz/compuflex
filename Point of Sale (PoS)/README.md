@@ -28,6 +28,8 @@ Overview
     2. ) [Clearing the cart](#ii-clearing-the-cart)
     3. ) [Removing an item from the cart](#iii-removing-an-item-from-the-cart-only-in-javascript-version) (*JavaScript version ONLY*)
 3. ) [The Transaction Record](#3-the-transaction-record)
+    1. ) [Processing a Transaction](#i-processing-a-transaction)
+    2. ) [Payment Fields](#ii-payment-fields)
 
 ## 1.) Configuration & Settings
 > These applications have a few settings and configurable options to mimic a variety of behaviors that can occur in actual user interfaces for PoS systems.
@@ -76,6 +78,6 @@ Overview
 
 ### ii.) Payment Fields
 > There are 3 payment fields:
- 1. ) `Total` which is shown on opening the program.
- 2. ) `Tendered` which is shown upon pressing the `Pay` button.
- 3. ) `Required` which is also shown upon pressing the `Pay` button.
+ 1. ) `Total` which is shown on opening the program. `Total` is the total sum of (the quantity * the price) of each item in the cart.
+ 2. ) `Tendered` which is shown upon pressing the `Pay` button. `Tendered` is the amount to be tendered from the customer.
+ 3. ) `Required` which is also shown upon pressing the `Pay` button. `Required` is the value of `Total - Tendered`. (i.e. if `Total = $20.00` and `Tendered = $23.00`, then `Required = (Total - Tendered) = ($20.00 - $23.00) = $3.00`, therefore `Required = $3.00`).
