@@ -56,7 +56,13 @@ Overview
   4. ) Re-open the program.
 
 ### ii.) Properties Files (*ONLY IN JAVAFX AND JAVA SWING VERSIONS*)
-> Java offers a built-in properties class that maps to a `Key-Value` pair in a related `.properties` file. For your information, if these file(s) are not in the directory where your `.jar` is located, the file(s) will be automatically generated within the application for your convenience. When you change settings in the Settings window ([*Refer back to 1a.) "Opening the Settings Window"*](#i-opening-the-settings-window)), after you press `Okay` or `OK`, it will automatically save these settings to the `.properties` file. When you open the program, it will reference these settings and display the UI based on those settings. The `default.properties` file is just a default file for reference, it is okay to delete it, but the program will automatically generate it if no `.properties` file is found. The main `.properties` file is named based on the `.jar` file, and it is also automatically generated, if deleted.
+> Java offers a built-in properties class that maps to a `Key-Value` pair in a related `.properties` file.
+
+> *For your information, if these file(s) are not in the directory where your `.jar` is located, the file(s) will be automatically generated within the application for your convenience.*
+
+> When you change settings in the Settings window ([*Refer back to 1a.) "Opening the Settings Window"*](#i-opening-the-settings-window)), after you press `Okay` or `OK`, it will automatically save these settings to the `.properties` file.
+
+> When you open the program, it will reference these settings and display the UI based on those settings. The `default.properties` file is just a default file for reference, it is okay to delete it, but the program will automatically generate it if no `.properties` file is found. The main `.properties` file is named based on the `.jar` file, and it is also automatically generated, if deleted.
 
 ## 2.) The Cart
 > The cart stores item(s) that are to be processed into a transaction, it generates a total price based on the individual price(s) of the item(s) in the cart. (i.e. for every 1 item priced at $1.00 in the cart, $1.00 will be added to the total price). You can view the cart by clicking the `Cart` tab at the top left.
@@ -86,4 +92,4 @@ Overview
 > There are 3 payment fields:
  1. ) `Total` which is shown on opening the program. `Total` is the total sum of (the quantity * the price) of each item in the cart.
  2. ) `Tendered` which is shown upon pressing the `Pay` button. `Tendered` is the amount to be tendered from the customer.
- 3. ) `Required` which is also shown upon pressing the `Pay` button. `Required` is the value of `Total - Tendered`. (i.e. if `Total = $20.00` and `Tendered = $23.00`, then `Required = (Total - Tendered) = ($20.00 - $23.00) = $3.00`, therefore `Required = $3.00`).
+ 3. ) `Required` which is also shown upon pressing the `Pay` button. `Required` is the value of `Total - Tendered`. (i.e. if `Total = $20.00` and `Tendered = $23.00`, then `Required = (Total - Tendered) = ($20.00 - $23.00) = -$3.00`, therefore `Required = -$3.00` which means the customer is owed `$3.00` in change).
