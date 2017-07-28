@@ -9,7 +9,12 @@ Versions in this repository
 -----
  - *PoS (Java - JavaFX) v1.3* ~ This is probably one of my best implementations of this project. It was created with Java / JavaFX using Eclipse IDE and Scene Builder 2.0 software.
  - *PoS (Java - Swing) v2.0* ~ This is another Java version of the project using a different `flavor`. It was created with Java / Swing / AWT using Eclipse IDE and it's `WindowBuilder` plugin.
- - *MockPoS (JavaScript)* ~ This implementation was done using web technologies including JavaScript, JQuery v3.2.1, Bootstrap v3.3.7, Font Awesome 4.7.0, HTML5, and CSS.
+ - *MockPoS (JavaScript)* ~ This implementation was done using web technologies including:
+     - JavaScript
+     - JQuery v3.2.1
+     - Bootstrap v3.3.7
+     - Font Awesome 4.7.0
+     - HTML5 & CSS.
 
 Overview
 -----
