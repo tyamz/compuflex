@@ -42,6 +42,7 @@ Overview
 > Once again, some PoS systems behave differently than others, some display usernames as a button, others as plain text, others might have a dropdown menu, and some might even be images. This application supports each of these behaviors. You can switch between these options using the radio button(s) provided in the Settings window (Refer back to "1a.) Opening the Settings Window").
 
 *To manually change this setting: (ONLY IN JAVAFX AND JAVA SWING VERSIONS)*
+
 .1.) Close the program
 .2.) Open the ".properties" file which has the same name as your ".jar".
 .3.) Change "userDisplay = <insert integer between 0-3 here>", if you put an integer other than 0-3, the program will use it's default. Check the "default.properties" file for a reference.
