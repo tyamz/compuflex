@@ -68,7 +68,7 @@ Overview
 > The cart stores item(s) that are to be processed into a transaction, it generates a total price based on the individual price(s) of the item(s) in the cart. (i.e. for every 1 item priced at $1.00 in the cart, $1.00 will be added to the total price). You can view the cart by clicking the `Cart` tab at the top left.
 
 ### i.) Adding an item to the cart
-> Click the `Add` button at the top left of the window (which is to the left of the `Clear` button [left of the `Remove` button in the JavaScript version]) to add an item to the cart, the item will be randomly generated based on hard-coded names and prices in the source code. After clicking `Add`, the item will be displayed in a graphical table, and the value of `Total` at the bottom left of the window will be incremented.
+> Click the `Add` button at the top left of the window (which is to the left of the `Clear` button *[left of the `Remove` button in the JavaScript version]*) to add an item to the cart, the item will be randomly generated based on hard-coded names and prices in the source code. After clicking `Add`, the item will be displayed in a graphical table, and the value of `Total` at the bottom left of the window will be incremented.
 
 ### ii.) Clearing the cart
 > Click the `Clear` button at the top left of the window (which is to the right of the `Add` button) to clear all item(s) from the cart. This will clear all item(s) from the cart, cancel the transaction, and set the value of `Total` at the bottom left to `$0.00`, effectively, resetting every value to default.
