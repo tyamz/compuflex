@@ -12,7 +12,7 @@ Versions in this repository
 
 Overview
 -----
-1. ) Configuration & Settings
+1. ) [Configuration & Settings](#1-configuration--settings)
     1. ) Opening the Settings window
         1. ) Pop-up Pay Window
         2. ) User Display Options
@@ -26,10 +26,10 @@ Overview
 ## 1.) Configuration & Settings
 > These applications have a few settings and configurable options to mimic a variety of behaviors that can occur in actual user interfaces for PoS systems.
 
-### a.) Opening the Settings Window
+### i.) Opening the Settings Window
 > You can open the settings window by right-clicking the top bar on any version of this application. Here you will see a variety of options.
 
-#### i.) Pop-up Pay Window
+#### a.) Pop-up Pay Window
 > Some PoS systems behave differently than others, some have a pop-up window, whereas some might show the whole process in one single window. You can toggle this option in every version using the radio button(s) provided in the Settings window (*Refer back to 1a.) `Opening the Settings Window`*). ***[NOTE: FOR JAVA SWING USER(S): There are no radio buttons, just a simple toggle button, this will be changed in the next released version for uniformity.]***
 
 *To manually change this setting: (ONLY IN JAVAFX AND JAVA SWING VERSIONS)*
@@ -38,7 +38,7 @@ Overview
  3. ) Change `popUp = false` to `popUp = true` to turn on the pop-up pay window, or vice versa to turn it off.
  4. ) Re-open the program.
 
-#### ii.) User Display Options
+#### b.) User Display Options
 > Once again, some PoS systems behave differently than others, some display usernames as a button, others as plain text, others might have a dropdown menu, and some might even be images. This application supports each of these behaviors. You can switch between these options using the radio button(s) provided in the Settings window (*Refer back to `1a.) Opening the Settings Window`*).
 
 *To manually change this setting: (ONLY IN JAVAFX AND JAVA SWING VERSIONS)*
@@ -47,19 +47,19 @@ Overview
   3. ) Change `userDisplay = <insert integer between 0-3 here>`, if you put an integer other than `0-3`, the program will use it's default. Check the `default.properties` file for a reference.
   4. ) Re-open the program.
 
-### b.) Properties Files (ONLY IN JAVAFX AND JAVA SWING VERSIONS)
+### ii.) Properties Files (ONLY IN JAVAFX AND JAVA SWING VERSIONS)
 > Java offers a built-in properties class that maps to a `Key-Value` pair in a related `.properties` file. For your information, if these file(s) are not in the directory where your `.jar` is located, the file(s) will be automatically generated within the application for your convenience. When you change settings in the Settings window (*Refer back to `1a.) Opening the Settings Window`*), after you press `Okay` or `OK`, it will automatically save these settings to the `.properties` file. When you open the program, it will reference these settings and display the UI based on those settings. The `default.properties` file is just a default file for reference, it is okay to delete it, but the program will automatically generate it if no `.properties` file is found. The main `.properties` file is named based on the `.jar` file, and it is also automatically generated, if deleted.
 
 ## 2.) The Cart
 > The cart stores item(s) that are to be processed into a transaction, it generates a total price based on the individual price(s) of the item(s) in the cart. (i.e. for every 1 item priced at $1.00 in the cart, $1.00 will be added to the total price). You can view the cart by clicking the `Cart` tab at the top left.
 
-### a.) Adding an item to the cart
+### i.) Adding an item to the cart
 > Click the `Add` button at the top left of the window (which is to the left of the `Clear` button [left of the `Remove` button in the JavaScript version]) to add an item to the cart, the item will be randomly generated based on hard-coded names and prices in the source code. After clicking `Add`, the item will be displayed in a graphical table, and the value of `Total` at the bottom left of the window will be incremented.
 
-### b.) Clearing the cart
+### ii.) Clearing the cart
 > Click the `Clear` button at the top left of the window (which is to the right of the `Add` button) to clear all item(s) from the cart. This will clear all item(s) from the cart, cancel the transaction, and set the value of `Total` at the bottom left to `$0.00`, effectively, resetting every value to default.
 
-### c.) Removing an item from the cart (ONLY IN JAVASCRIPT VERSION)
+### iii.) Removing an item from the cart (ONLY IN JAVASCRIPT VERSION)
 > To remove a specific item from the cart, simply click the checkbox next to that item in the table and it will remove all instances of that item. ***[NOTE: This operation was only done in the JavaScript version for the sake of simplicity in the Java version(s).]***
 
 ## 3.) The Transaction Record
