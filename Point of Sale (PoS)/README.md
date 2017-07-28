@@ -1,14 +1,15 @@
 Point of Sale (PoS) Systems ~ Thomas Yamakaitis
 =====
+
 About
 -----
 > The following repository contains multiple versions of the same or similar PoS systems. These are just GUI versions for testing purposes. They are meant to assist developers at the Compuflex Corporation to test screen mapping and management software(s). These application(s) are, simply put, Graphical representations of actual PoS systems, and they mimic common behavior(s) in such systems.
 
 Versions in this repository
 -----
- - PoS (Java - JavaFX) v1.3 ~ This is probably one of my best implementations of this project. It was created with Java / JavaFX using Eclipse IDE and Scene Builder 2.0 software.
- - PoS (Java - Swing) v2.0 ~ This is another Java version of the project using a different `flavor`. It was created with Java / Swing / AWT using Eclipse IDE and it's `WindowBuilder` plugin.
- - MockPoS (JavaScript) ~ This implementation was done using web technologies including JavaScript, JQuery v3.2.1, Bootstrap v3.3.7, Font Awesome 4.7.0, HTML5, and CSS.
+ - *PoS (Java - JavaFX) v1.3* ~ This is probably one of my best implementations of this project. It was created with Java / JavaFX using Eclipse IDE and Scene Builder 2.0 software.
+ - *PoS (Java - Swing) v2.0* ~ This is another Java version of the project using a different `flavor`. It was created with Java / Swing / AWT using Eclipse IDE and it's `WindowBuilder` plugin.
+ - *MockPoS (JavaScript)* ~ This implementation was done using web technologies including JavaScript, JQuery v3.2.1, Bootstrap v3.3.7, Font Awesome 4.7.0, HTML5, and CSS.
 
 Overview
 -----
