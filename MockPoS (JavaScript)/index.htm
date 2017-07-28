@@ -27,45 +27,53 @@
     <script src="js/script.js"></script>
   </head>
   <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top navbar-collapse" id="top">
+    <nav class="navbar navbar-inverse navbar-fixed-top navbar-collapse" id="top" oncontextmenu="openSettings(); return false;">
      <div class="container-fluid">
        <div class="navbar-header">
          <a class="navbar-brand" href="#">MockPoS</a>
        </div>
        <ul class="nav navbar-nav">
-         <li onClick="openCart()" class="active" id="cart-button"><a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart</a></li>
-         <li onClick="openTrans()" id="trans-button"><a href="#"><i class="fa fa-exchange" aria-hidden="true"></i> Trans</a></li>
+         <li onclick="openCart()" class="active" id="cart-button"><a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart</a></li>
+         <li onclick="openTrans()" id="trans-button"><a href="#"><i class="fa fa-exchange" aria-hidden="true"></i> Trans</a></li>
        </ul>
        <ul class="nav navbar-nav navbar-right">
          <li><a href="#"><i class="fa fa-clock-o" aria-hidden="true"></i> <span id="time"></span></a></li>
-         <li onClick="changeUser()"><a href="#"><i class="fa fa-user" aria-hidden="true"></i> <span id="user">Tommy</span></a></li>
+         <li onclick="changeUser()" id="userLbl"><a href="#"><i class="fa fa-user" aria-hidden="true"></i> <span id="user">Tommy</span></a></li>
+         <button class="btn btn navbar-btn" id="userBtn" onclick="changeUser()">Tommy</button>
+         <div class="dropdown pos" id="userDropDown" style="display: none">
+           <button class="btn btn dropdown-toggle" type="button" data-toggle="dropdown"><span id="userDrop">Tommy</span>
+           <span class="caret"></span></button>
+           <ul class="dropdown-menu" id="userDropMenu">
+           </ul>
+          </div>
+          <li onclick="changeUser()" id="userImgHolder"><a href="#"><img id="userImg" /></a></li>
        </ul>
      </div>
     </nav>
-    <nav class="navbar navbar-default navbar-fixed-bottom" id="bottom">
+    <nav class="navbar navbar-default navbar-fixed-bottom navbar-collapse" id="bottom">
       <div class="container-fluid">
         <ul class="nav navbar-nav navbar-header">
           <li class="active"><a class="navbar-total" href="#">Total: $<span id="total">0.00</span></a></li>
         </ul>
         <form class="navbar-form navbar-left" id="paid">
           <div class="form-group">
-            Paid: $ <input type="text" class="form-control input" id="paidInput">
+            Tendered: $ <input type="text" class="form-control input" id="paidInput">
           </div>
         </form>
         <ul class="nav navbar-nav">
-          <li id="change"><a class="navbar-total" href="#">Change: $<span id="result">0.00</span></a></li>
+          <li id="change"><a class="navbar-total" href="#">Required: $<span id="required">0.00</span></a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li onClick="pay()" id="pay"><a href="#" class="green-bg"><i class="fa fa-money" aria-hidden="true"></i> Pay</a></li>
-          <li onClick="process()" id="process"><a href="#" class="yellow-bg"><i class="fa fa-cogs" aria-hidden="true"></i> Process</a></li>
-          <li onClick="cancel()" id="cancel"><a href="#" class="red-bg"><i class="fa fa-ban" aria-hidden="true"></i> Cancel</a></li>
+          <button type="button" class="btn btn-success navbar-btn" onclick="pay()" id="pay" disabled><i class="fa fa-money" aria-hidden="true"></i> Pay</button>
+          <button type="button" class="btn btn-info navbar-btn" onclick="process()" id="process"><i class="fa fa-cogs" aria-hidden="true"></i> Process</button>
+          <button type="button" class="btn btn-danger navbar-btn" onclick="cancel()" id="cancel"><i class="fa fa-ban" aria-hidden="true"></i> Cancel</button>
         </ul>
       </div>
     </nav>
     <div class="container-fluid" id="cart-content">
-      <button type="button" class="btn btn-success" id="addBtn" onClick="add()"><i class="fa fa-plus" aria-hidden="true"></i> Add</button>
-      <button type="button" class="btn btn-warning" onClick="remove()"><i class="fa fa-minus" aria-hidden="true"></i> Remove</button>
-      <button type="button" class="btn btn-danger" onClick="clearAll()"><i class="fa fa-trash-o" aria-hidden="true"></i> Clear</button>
+      <button type="button" class="btn btn-success" id="addBtn" onclick="add()"><i class="fa fa-plus" aria-hidden="true"></i> Add</button>
+      <button type="button" class="btn btn-warning" onclick="remove()"><i class="fa fa-minus" aria-hidden="true"></i> Remove</button>
+      <button type="button" class="btn btn-danger" onclick="clearAll()"><i class="fa fa-trash-o" aria-hidden="true"></i> Clear</button>
       <br /><br />
       <table class="table bordered" id="cart">
         <thead>
@@ -103,5 +111,67 @@
         </tbody>
       </table>
     </div>
+
+    <!-- Settings Modal -->
+    <div id="settings" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h3 class="modal-title text-primary">App Settings</h3>
+          </div>
+          <div class="modal-body">
+            <h4 class="text-info">Pay Window Settings</h4>
+            <form id="payWindowSettings">
+              <input type="radio" name="popUp" value="0" checked> Inside<br />
+              <input type="radio" name="popUp" value="1"> Pop Up<br />
+            </form>
+            <hr />
+            <h4 class="text-info">User Display Settings</h4>
+            <form id="userDisplaySettings">
+              <input type="radio" name="userDisplay" value="0" checked> Labels<br />
+              <input type="radio" name="userDisplay" value="1"> Buttons<br />
+              <input type="radio" name="userDisplay" value="2"> Dropdown<br />
+              <input type="radio" name="userDisplay" value="3"> Images<br />
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="updateSettings()">Okay</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Pay Window Modal -->
+    <div id="payWindow" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Pay</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <p>Total: $<span id="totalWindow"></span></p>
+                <p>Tendered: $ <input type="text" class="form-control input" id="paidInputWindow" value="0.00"></p>
+                <p>Required: $<soan id="requiredWindow"></p>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" onclick="process()" data-dismiss="modal" id="prcBtn" disabled>Process</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <canvas id='textCanvas' height=20></canvas>
   </body>
 </html>

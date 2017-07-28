@@ -6,8 +6,12 @@ body {
   border: 1px solid #ddd;
 }
 
-#pay, #paid, #process, #change, #trans-content, #trans-complete, #empty-cart, #cancel {
+#userDropDown, #userBtn, #paid, #process, #change, #trans-content, #trans-complete, #empty-cart, #cancel {
     display: none;
+}
+
+.dropdown.pos {
+  margin: 8px;
 }
 
 @media screen and (max-width: 768px) {

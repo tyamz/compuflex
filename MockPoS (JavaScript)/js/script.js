@@ -1,3 +1,6 @@
+var paySetting;
+var userDisplay;
+
 /* STARTUP SCRIPTS */
 $( document ).ready(function() {
     startTime();
@@ -10,7 +13,35 @@ $( document ).ready(function() {
     $('.input').each(function() {
         changeInput();
     });
+
+    updateSettings();
+
+    var name = ["Tommy","Thor","Iron Man","Spider-Man","Captain America","Daredevil"];
+    var drop = document.getElementById('userDropMenu');
+    for(var i = 0; i < name.length; i++) {
+      var user = name[i];
+      var entry = document.createElement('li');
+      entry.innerHTML = '<a href="#" onclick="setUser(\'' + user + '\')">' + user + '</a>';
+      drop.appendChild(entry);
+    }
+
+    $('#payWindowSettings input[name="popUp"]').click(function() {
+      paySetting = this.value;
+    })
+    $('#userDisplaySettings input[name = "userDisplay"]').click(function() {
+          userDisplay = this.value;
+          changeUserDisplay();
+    })
+
+    drawTextAndResize("Tommy");
 });
+
+// Update page and window settings
+function updateSettings() {
+    paySetting = document.querySelector('#payWindowSettings input[name = "popUp"]:checked').value;
+    userDisplay = document.querySelector('#userDisplaySettings input[name = "userDisplay"]:checked').value;
+    changeUserDisplay();
+}
 
 /* USER FUNCTIONS */
 // Function to Change the User
@@ -18,6 +49,16 @@ function changeUser() {
     var name = ["Tommy","Thor","Iron Man","Spider-Man","Captain America","Daredevil"];
     var choice = Math.floor(Math.random() * name.length);
     document.getElementById("user").innerHTML = name[choice];
+    document.getElementById("userBtn").innerHTML = name[choice];
+    document.getElementById("userDrop").innerHTML = name[choice];
+    drawTextAndResize(name[choice]);
+}
+
+function setUser(name) {
+    document.getElementById("user").innerHTML = name;
+    document.getElementById("userBtn").innerHTML = name;
+    document.getElementById("userDrop").innerHTML = name;
+    drawTextAndResize(name);
 }
 
 /* CART FUNCTIONS */
@@ -30,8 +71,8 @@ function add() {
 
     var table = document.getElementById("cart");
 
-    if(table.rows.length > 0 && !$('#pay').is(':visible')) {
-      $('#pay').fadeIn(1000);
+    if(table.rows.length > 0) {
+      $('#pay').prop('disabled', false);
     }
 
     if(cartContains(n[choice])) {
@@ -87,8 +128,11 @@ function remove()  {
         }
 
         if(table.rows.length == 1) {
-          $('#addBtn').fadeIn(1000);
-          $('#pay').hide();
+          $('#addBtn').prop('disabled', false);
+          $('#pay').prop('disabled', true);
+          $('#process').hide();
+          $('#cancel').hide();
+          $('#pay').fadeIn(1000);
         }
 }
 
@@ -101,15 +145,22 @@ function clearAll() {
         table.deleteRow(i);
     }
 
-    document.getElementById("result").innerHTML = 0.00;
+    document.getElementById("required").innerHTML = 0.00;
     document.getElementById("total").innerHTML = 0.00;
-    document.getElementById("paidInput").value = 0.00;
+    document.getElementById("requiredWindow").innerHTML = 0.00;
+    document.getElementById("totalWindow").innerHTML = 0.00;
+    if(paySetting == 0) {
+      document.getElementById("paidInput").value = "0.00";
+    } else {
+      document.getElementById("paidInputWindow").value = "0.00";
+    }
     $("#paid").hide();
     $("#change").hide();
     $("#process").hide();
     $("#cancel").hide();
-    $('#addBtn').fadeIn(1000);
-    $('#pay').hide();
+    $('#addBtn').prop('disabled', false);
+    $('#pay').prop('disabled', true);
+    $('#pay').fadeIn(1000);
 }
 
 // Function to check if one of the item(s) has already been added to the cart, if so, increment instead of create new cart item.
@@ -127,11 +178,13 @@ function incTotal(total) {
     var t = document.getElementById("total").innerHTML;
     t = parseFloat(t) + parseFloat(total);
     document.getElementById("total").innerHTML = parseFloat(t).toFixed(2);
+    document.getElementById("totalWindow").innerHTML = parseFloat(t).toFixed(2);
 
     var paid = $('#paidInput').val() == '' ? '___' : $('#paidInput').val();
     var total = document.getElementById("total").innerHTML;
-    var result = (total - paid) * -1;
-    $('#result').html(parseFloat(result).toFixed(2));
+    var required = total - paid;
+    $('#required').html(parseFloat(required).toFixed(2));
+    $('#requiredWindow').html(parseFloat(required).toFixed(2));
 }
 
 /* PAYMENT FUNCTIONS */
@@ -140,8 +193,8 @@ function process() {
     var time = getTime();
     var userName = document.getElementById("user").innerHTML;
     var totalOwed = parseFloat(document.getElementById("total").innerHTML);
-    var totalPaid = document.getElementById("paidInput").value;
-    var tendered = parseFloat(document.getElementById("result").innerHTML);
+    var tenderedAmt = (paySetting == 0) ? document.getElementById("paidInput").value : document.getElementById("paidInputWindow").value;
+    var required = parseFloat(document.getElementById("required").innerHTML);
 
     if(totalOwed == 0 || cart[0] == null) {
         $('#empty-cart').fadeIn(1000);
@@ -155,14 +208,14 @@ function process() {
         var stamp = row.insertCell(0);
         var user = row.insertCell(1);
         var total = row.insertCell(2);
-        var paid = row.insertCell(3);
+        var tendered = row.insertCell(3);
         var change = row.insertCell(4);
 
         stamp.innerHTML = time;
         user.innerHTML = userName;
         total.innerHTML = "$" + parseFloat(totalOwed).toFixed(2);
-        paid.innerHTML = "$" + parseFloat(totalPaid).toFixed(2);
-        change.innerHTML = "$" + parseFloat(tendered).toFixed(2);
+        tendered.innerHTML = "$" + parseFloat(tenderedAmt).toFixed(2);
+        change.innerHTML = "$" + parseFloat(required).toFixed(2);
 
         clearAll();
         $('#trans-complete').fadeIn(1000);
@@ -173,35 +226,108 @@ function process() {
 /* DISPLAY FUNCTIONS */
 // Function to display the payment process
 function pay() {
-    $("#paid").fadeIn(1000);
-    $("#change").fadeIn(1000);
-    $("#pay").hide();
-    $("#cancel").fadeIn(1000);
-    $('#addBtn').hide();
+  if(paySetting == 0) {
+      $("#paid").fadeIn(1000);
+      $("#change").fadeIn(1000);
+      $("#pay").hide();
+      $("#cancel").fadeIn(1000);
+      $("#process").fadeIn(1000);
+      $('#addBtn').prop('disabled', true);
+  } else {
+      $("#payWindow").modal();
+  }
 }
 
+// Function to cancel the transaction process
 function cancel() {
     var table = document.getElementById("cart");
     $("#paid").hide();
     $("#change").hide();
-    $("#pay").hide();
+    $('#pay').fadeIn(1000);
     $("#cancel").hide();
-    $('#addBtn').fadeIn(1000);
-    if(table.rows.length > 0 && !$('#pay').is(':visible')) {
-      $('#pay').fadeIn(1000);
+    $('#addBtn').prop('disabled', false);
+    $('#process').hide();
+    if(table.rows.length > 0) {
+      $('#pay').prop('disabled', false);
     }
 }
 
+// Function to change input values
 function changeInput() {
-    var paid = $('#paidInput').val() == '' ? '___' : $('#paidInput').val();
-    var total = document.getElementById("total").innerHTML;
-    var result = (total - paid) * -1;
-    $('#result').html(parseFloat(result).toFixed(2));
-    if(total != 0 && result >= 0) {
-      $('#process').fadeIn(1000);
+    var paid;
+    if(paySetting == 0) {
+      paid = $('#paidInput').val() == '' ? '___' : $('#paidInput').val();
     } else {
-      $('#process').hide();
+      paid = $('#paidInputWindow').val() == '' ? '___' : $('#paidInputWindow').val();
     }
+    var total = document.getElementById("total").innerHTML;
+    var required = total - paid;
+    $('#required').html(parseFloat(required).toFixed(2));
+    $('#requiredWindow').html(parseFloat(required).toFixed(2));
+    if(total != 0 && required <= 0) {
+      if(paySetting == 0) {
+        $('#process').prop('disabled', false);
+      } else {
+        $('#prcBtn').prop('disabled', false);
+      }
+    } else {
+      $('#process').prop('disabled', true);
+      $('#prcBtn').prop('disabled', true);
+    }
+}
+
+// Function to change the way the username is displayed
+function changeUserDisplay() {
+  switch(userDisplay) {
+    case "0":
+      $('#userLbl').show();
+      $('#userBtn').hide();
+      $('#userDropDown').hide();
+      $('#userImgHolder').hide();
+      break;
+    case "1":
+      $('#userBtn').show();
+      $('#userLbl').hide();
+      $('#userDropDown').hide();
+      $('#userImgHolder').hide();
+      break;
+    case "2":
+      $('#userDropDown').css('display', 'inline-block');
+      $('#userBtn').hide();
+      $('#userLbl').hide();
+      $('#userImgHolder').hide();
+      break;
+    case "3":
+        $('#userImgHolder').show();
+        $('#userDropDown').hide();
+        $('#userBtn').hide();
+        $('#userLbl').hide();
+        break;
+    default:
+      $('#userLbl').show();
+      $('#userBtn').hide();
+      $('#userDropDown').hide();
+      break;
+  }
+}
+
+// Draw text as an image;
+function drawTextAndResize(text) {
+  var font = "Verdana";
+  var fontSize = 14;
+  var ctx = document.getElementById('textCanvas').getContext('2d'), imageElem = document.getElementById('userImg')
+  ctx.font = fontSize + 'px '+ font;
+  ctx.canvas.width = ctx.measureText(text).width;
+  ctx.canvas.height = fontSize*1.3;
+  ctx.font = fontSize + 'px '+ font;
+  ctx.fillStyle = "#fff";
+  ctx.fillText(text, 0,ctx.canvas.height/1.3);
+  imageElem.src = ctx.canvas.toDataURL();
+}
+
+// Function to open settings window
+function openSettings() {
+    $('#settings').modal();
 }
 
 // Function to change to cart page
