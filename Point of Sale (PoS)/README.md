@@ -70,3 +70,12 @@ Overview
 
 ## 3.) The Transaction Record
 > The transaction record stores transaction(s) which contain information about a cart that was processed through the system at the Point of Sale. It holds the total price of the cart, the amount of currency tendered, and the amount of change returned as well as the time that the transaction took place and the user who processed it. You can view the transaction record by clicking the `Trans` tab at the top left, to the right of the `Cart` tab. The transaction record has no operation(s) because transactions are not meant to be tampered with, they record one's history of transactions.
+
+### i.) Processing a Transaction
+> To process a transaction, first you must add items to the cart ([*Refer back to 2i.) "Adding an item to the cart"*](#i-adding-an-item-to-the-cart)), then click the `Pay` button located at the bottom right corner. Depending on your settings, either a pop-up window will appear or fields will appear within the same window. ([*Refer to 3ii.) "Payment Fields"*](#ii-payment-fields)). Next, you will enter a ***NUMERIC*** value into the `Tendered` text field. The `Tendered` amount must be *greater than or equal to* the `Total` amount, which means the `Required` amount must be *`$0.00` or LESS* in order to continue. Once those conditions are met, the `Process` button will be enabled and you can click it to process the transaction. This will store a transaction in the transaction record with the current time and user, as well as the values of the fields  ([*Refer to 3ii.) "Payment Fields"*](#ii-payment-fields)). This will also clear the cart and reset all fields to default or `$0.00`.
+
+### ii.) Payment Fields
+> There are 3 payment fields:
+ 1. ) `Total` which is shown on opening the program.
+ 2. ) `Tendered` which is shown upon pressing the `Pay` button.
+ 3. ) `Required` which is also shown upon pressing the `Pay` button.
