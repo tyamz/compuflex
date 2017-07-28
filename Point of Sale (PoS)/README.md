@@ -38,7 +38,7 @@ Overview
 > You can open the settings window by right-clicking the top bar on any version of this application. Here you will see a variety of options.
 
 #### a.) Pop-up Pay Window
-> Some PoS systems behave differently than others, some have a pop-up window, whereas some might show the whole process in one single window. You can toggle this option in every version using the radio button(s) provided in the Settings window ([*Refer back to 1a.) "Opening the Settings Window"*](#i-opening-the-settings-window)). ***[NOTE: FOR JAVA SWING USER(S): There are no radio buttons, just a simple toggle button, this will be changed in the next released version for uniformity.]***
+> Some PoS systems behave differently than others, some have a pop-up window, whereas some might show the whole process in one single window. You can toggle this option in every version using the radio button(s) provided in the Settings window ([*Refer back to 1i.) "Opening the Settings Window"*](#i-opening-the-settings-window)). ***[NOTE: FOR JAVA SWING USER(S): There are no radio buttons, just a simple toggle button, this will be changed in the next released version for uniformity.]***
 
 *To manually change this setting: (ONLY IN JAVAFX AND JAVA SWING VERSIONS)*
  1. ) Close the program.
@@ -47,7 +47,7 @@ Overview
  4. ) Re-open the program.
 
 #### b.) User Display Options
-> Once again, some PoS systems behave differently than others, some display usernames as a button, others as plain text, others might have a dropdown menu, and some might even be images. This application supports each of these behaviors. You can switch between these options using the radio button(s) provided in the Settings window ([*Refer back to 1a.) "Opening the Settings Window"*](#i-opening-the-settings-window)).
+> Once again, some PoS systems behave differently than others, some display usernames as a button, others as plain text, others might have a dropdown menu, and some might even be images. This application supports each of these behaviors. You can switch between these options using the radio button(s) provided in the Settings window ([*Refer back to 1i.) "Opening the Settings Window"*](#i-opening-the-settings-window)).
 
 *To manually change this setting: (ONLY IN JAVAFX AND JAVA SWING VERSIONS)*
   1. ) Close the program
@@ -60,7 +60,7 @@ Overview
 
 > *For your information, if these file(s) are not in the directory where your `.jar` is located, the file(s) will be automatically generated within the application for your convenience.*
 
-> When you change settings in the Settings window ([*Refer back to 1a.) "Opening the Settings Window"*](#i-opening-the-settings-window)), after you press `Okay` or `OK`, it will automatically save these settings to the `.properties` file.
+> When you change settings in the Settings window ([*Refer back to 1i.) "Opening the Settings Window"*](#i-opening-the-settings-window)), after you press `Okay` or `OK`, it will automatically save these settings to the `.properties` file.
 
 > When you open the program, it will reference these settings and display the UI based on those settings. The `default.properties` file is just a default file for reference, it is okay to delete it, but the program will automatically generate it if no `.properties` file is found. The main `.properties` file is named based on the `.jar` file, and it is also automatically generated, if deleted.
 
