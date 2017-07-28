@@ -43,8 +43,8 @@ Overview
 
 *To manually change this setting: (ONLY IN JAVAFX AND JAVA SWING VERSIONS)*
 
-  1.) Close the program
-  2.) Open the ".properties" file which has the same name as your ".jar".
+  1. Close the program
+  2. Open the ".properties" file which has the same name as your ".jar".
   3.) Change "userDisplay = <insert integer between 0-3 here>", if you put an integer other than 0-3, the program will use it's default. Check the "default.properties" file for a reference.
   4.) Re-open the program.
 
