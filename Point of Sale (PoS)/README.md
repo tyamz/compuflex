@@ -39,7 +39,7 @@ Overview
  4. ) Re-open the program.
 
 #### b.) User Display Options
-> Once again, some PoS systems behave differently than others, some display usernames as a button, others as plain text, others might have a dropdown menu, and some might even be images. This application supports each of these behaviors. You can switch between these options using the radio button(s) provided in the Settings window (*Refer back to `1a.) Opening the Settings Window`*).
+> Once again, some PoS systems behave differently than others, some display usernames as a button, others as plain text, others might have a dropdown menu, and some might even be images. This application supports each of these behaviors. You can switch between these options using the radio button(s) provided in the Settings window ([*Refer back to 1a.) "Opening the Settings Window"*](#i-opening-the-settings-window)).
 
 *To manually change this setting: (ONLY IN JAVAFX AND JAVA SWING VERSIONS)*
   1. ) Close the program
@@ -48,7 +48,7 @@ Overview
   4. ) Re-open the program.
 
 ### ii.) Properties Files (ONLY IN JAVAFX AND JAVA SWING VERSIONS)
-> Java offers a built-in properties class that maps to a `Key-Value` pair in a related `.properties` file. For your information, if these file(s) are not in the directory where your `.jar` is located, the file(s) will be automatically generated within the application for your convenience. When you change settings in the Settings window (*Refer back to 1a.) "Opening the Settings Window"*), after you press `Okay` or `OK`, it will automatically save these settings to the `.properties` file. When you open the program, it will reference these settings and display the UI based on those settings. The `default.properties` file is just a default file for reference, it is okay to delete it, but the program will automatically generate it if no `.properties` file is found. The main `.properties` file is named based on the `.jar` file, and it is also automatically generated, if deleted.
+> Java offers a built-in properties class that maps to a `Key-Value` pair in a related `.properties` file. For your information, if these file(s) are not in the directory where your `.jar` is located, the file(s) will be automatically generated within the application for your convenience. When you change settings in the Settings window ([*Refer back to 1a.) "Opening the Settings Window"*](#i-opening-the-settings-window)), after you press `Okay` or `OK`, it will automatically save these settings to the `.properties` file. When you open the program, it will reference these settings and display the UI based on those settings. The `default.properties` file is just a default file for reference, it is okay to delete it, but the program will automatically generate it if no `.properties` file is found. The main `.properties` file is named based on the `.jar` file, and it is also automatically generated, if deleted.
 
 ## 2.) The Cart
 > The cart stores item(s) that are to be processed into a transaction, it generates a total price based on the individual price(s) of the item(s) in the cart. (i.e. for every 1 item priced at $1.00 in the cart, $1.00 will be added to the total price). You can view the cart by clicking the `Cart` tab at the top left.
