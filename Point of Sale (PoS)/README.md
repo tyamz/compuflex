@@ -32,10 +32,10 @@ Overview
 ## 1.) Configuration & Settings
 > These applications have a few settings and configurable options to mimic a variety of behaviors that can occur in actual user interfaces for PoS systems.
 
-### i.) Opening the Settings Window
+  ### i.) Opening the Settings Window
 > You can open the settings window by right-clicking the top bar on any version of this application. Here you will see a variety of options.
 
-#### a.) Pop-up Pay Window
+  #### a.) Pop-up Pay Window
 > Some PoS systems behave differently than others, some have a pop-up window, whereas some might show the whole process in one single window. You can toggle this option in every version using the radio button(s) provided in the Settings window ([*Refer back to 1a.) "Opening the Settings Window"*](#i-opening-the-settings-window)). ***[NOTE: FOR JAVA SWING USER(S): There are no radio buttons, just a simple toggle button, this will be changed in the next released version for uniformity.]***
 
 *To manually change this setting: (ONLY IN JAVAFX AND JAVA SWING VERSIONS)*
