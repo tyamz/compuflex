@@ -90,6 +90,6 @@ Overview
 
 ### ii.) Payment Fields
 > There are 3 payment fields:
- 1. ) `Total` which is shown on opening the program. `Total` is the total sum of (the quantity * the price) of each item in the cart.
+ 1. ) `Total` which is shown on opening the program. `Total` is the total sum of (_the quantity * the price_) of each item in the cart.
  2. ) `Tendered` which is shown upon pressing the `Pay` button. `Tendered` is the amount to be tendered from the customer.
  3. ) `Required` which is also shown upon pressing the `Pay` button. `Required` is the value of `Total - Tendered`. (i.e. if `Total = $20.00` and `Tendered = $23.00`, then `Required = (Total - Tendered) = ($20.00 - $23.00) = -$3.00`, therefore `Required = -$3.00` which means the customer is owed `$3.00` in change).
