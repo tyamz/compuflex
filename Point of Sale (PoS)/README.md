@@ -13,23 +13,14 @@ Versions in this repository
 Overview
 -----
 1. ) Configuration & Settings
-
-   a. ) Opening the Settings window
-
-    i. ) Pop-up Pay Window
-
-    ii. ) User Display Options
-
-   b. ) Properties Files (JavaFX / Java Swing versions ONLY)
-
+    1. ) Opening the Settings window
+        1. ) Pop-up Pay Window
+        2. ) User Display Options
+    2. ) Properties Files (JavaFX / Java Swing versions ONLY)
 2. ) The Cart
-
-   a. ) Adding an item to the cart
-
-   b. ) Clearing the cart
-
-   c. ) Removing an item from the cart (JavaScript version ONLY)
-   
+    1. ) Adding an item to the cart
+    2. ) Clearing the cart
+    3. ) Removing an item from the cart (JavaScript version ONLY)
 3. ) The Transaction Record
 
 ## 1.) Configuration & Settings
