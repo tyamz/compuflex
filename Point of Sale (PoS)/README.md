@@ -47,7 +47,7 @@ Overview
   3. ) Change `userDisplay = <insert integer between 0-3 here>`, if you put an integer other than `0-3`, the program will use it's default. Check the `default.properties` file for a reference.
   4. ) Re-open the program.
 
-### ii.) Properties Files (ONLY IN JAVAFX AND JAVA SWING VERSIONS)
+### ii.) Properties Files (*ONLY IN JAVAFX AND JAVA SWING VERSIONS*)
 > Java offers a built-in properties class that maps to a `Key-Value` pair in a related `.properties` file. For your information, if these file(s) are not in the directory where your `.jar` is located, the file(s) will be automatically generated within the application for your convenience. When you change settings in the Settings window ([*Refer back to 1a.) "Opening the Settings Window"*](#i-opening-the-settings-window)), after you press `Okay` or `OK`, it will automatically save these settings to the `.properties` file. When you open the program, it will reference these settings and display the UI based on those settings. The `default.properties` file is just a default file for reference, it is okay to delete it, but the program will automatically generate it if no `.properties` file is found. The main `.properties` file is named based on the `.jar` file, and it is also automatically generated, if deleted.
 
 ## 2.) The Cart
@@ -59,7 +59,7 @@ Overview
 ### ii.) Clearing the cart
 > Click the `Clear` button at the top left of the window (which is to the right of the `Add` button) to clear all item(s) from the cart. This will clear all item(s) from the cart, cancel the transaction, and set the value of `Total` at the bottom left to `$0.00`, effectively, resetting every value to default.
 
-### iii.) Removing an item from the cart (ONLY IN JAVASCRIPT VERSION)
+### iii.) Removing an item from the cart (*ONLY IN JAVASCRIPT VERSION*)
 > To remove a specific item from the cart, simply click the checkbox next to that item in the table and it will remove all instances of that item. ***[NOTE: This operation was only done in the JavaScript version for the sake of simplicity in the Java version(s).]***
 
 ## 3.) The Transaction Record
