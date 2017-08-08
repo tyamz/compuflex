@@ -1,0 +1,19 @@
+.menu {
+  position: fixed;
+  display: block;
+}
+#header {
+  position: fixed;
+  display: block;
+  width: 100%;
+  z-index: 99;
+}
+#content {
+  margin-top: 140px;
+}
+:target:before {
+  content: "";
+  display: block;
+  height: 200px; /* fixed header height*/
+  margin: -200px 0 0; /* negative fixed header height */
+}

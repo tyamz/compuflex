@@ -1,0 +1,45 @@
+/* Decimal */
+ol.dec {
+  counter-reset: d;
+  list-style-type: none;
+}
+ol.dec li:before {
+  counter-increment: d;
+  content: counters(d, ".") ".) ";
+}
+/* Lowercase Alphabetical */
+ol.lower-a {
+  counter-reset: a;
+  list-style-type: none;
+}
+ol.lower-a li:before {
+  counter-increment: a;
+  content: counters(a, ".", lower-alpha) ".) ";
+}
+/* Lowercase Roman Numeral */
+ol.lower-i {
+  counter-reset: i;
+  list-style-type: none;
+}
+ol.lower-i li:before {
+  counter-increment: i;
+  content: counters(i, ".", lower-roman) ".) ";
+}
+/* Uppercase Alphabetical */
+ol.upper-a {
+  counter-reset: A;
+  list-style-type: none;
+}
+ol.upper-a li:before {
+  counter-increment: A;
+  content: counters(A, ".", upper-alpha) ".) ";
+}
+/* Uppercase Roman Numeral */
+ol.upper-i {
+  counter-reset: I;
+  list-style-type: none;
+}
+ol.upper-a li::before {
+  counter-increment: I;
+  content: counters(I, ".", upper-roman) ".) ";
+}
