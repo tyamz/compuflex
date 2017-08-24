@@ -1,5 +1,8 @@
 var paySetting;
 var userDisplay;
+var itemList = [];
+var priceList = [];
+var name = ["Tommy","Thor","Iron Man","Spider-Man","Captain America","Daredevil"];
 
 /* STARTUP SCRIPTS */
 $( document ).ready(function() {
@@ -16,7 +19,23 @@ $( document ).ready(function() {
 
     updateSettings();
 
-    var name = ["Tommy","Thor","Iron Man","Spider-Man","Captain America","Daredevil"];
+    // Possible Product Lists
+
+    // Setting Products
+    $.ajaxSetup({beforeSend: function(xhr){
+      if (xhr.overrideMimeType)
+      {
+        xhr.overrideMimeType("application/json");
+      }
+    }
+    });
+    $.getJSON("products/Nuts.json", function(data) {
+        $.each(data.items, function(index, entry){
+          itemList.push(this.name);
+          priceList.push(this.price);
+        });
+    });
+
     var drop = document.getElementById('userDropMenu');
     for(var i = 0; i < name.length; i++) {
       var user = name[i];
@@ -46,7 +65,6 @@ function updateSettings() {
 /* USER FUNCTIONS */
 // Function to Change the User
 function changeUser() {
-    var name = ["Tommy","Thor","Iron Man","Spider-Man","Captain America","Daredevil"];
     var choice = Math.floor(Math.random() * name.length);
     document.getElementById("user").innerHTML = name[choice];
     document.getElementById("userBtn").innerHTML = name[choice];
@@ -65,18 +83,15 @@ function setUser(name) {
 // Function to add item(s) to the cart.
 function add() {
     "use strict";
-    var n = ["Macadamia", "Hazelnut", "Almond", "Peanut", "Walnut", "Pistachio", "Pecan", "Brazil"];
-    var p = [2.00, 1.90, 1.31, 0.85, 1.12, 1.53, 1.25, 1.75];
-    var choice = Math.floor(Math.random() * n.length);
-
+    var choice = Math.floor(Math.random() * itemList.length);
     var table = document.getElementById("cart");
 
     if(table.rows.length > 0) {
       $('#pay').prop('disabled', false);
     }
 
-    if(cartContains(n[choice])) {
-        var row = document.getElementById(n[choice]);
+    if(cartContains(itemList[choice])) {
+        var row = document.getElementById(itemList[choice]);
         // Get Old Info
         var i = row.rowIndex;
         var q = row.cells[3].innerHTML;
@@ -85,11 +100,11 @@ function add() {
     } else {
         var i = table.rows.length;
         q = 1;
-        cart.push(n[choice]);
+        cart.push(itemList[choice]);
     }
     var row = table.insertRow(i);
     row.className = "active";
-    row.id = n[choice];
+    row.id = itemList[choice];
 
     var checkbox = row.insertCell(0);
     var description = row.insertCell(1);
@@ -98,8 +113,8 @@ function add() {
     var total = row.insertCell(4);
 
     checkbox.innerHTML = '<input type="checkbox" name="chk"/>';
-    description.innerHTML = n[choice];
-    price.innerHTML = p[choice];
+    description.innerHTML = itemList[choice];
+    price.innerHTML = priceList[choice];
     quantity.innerHTML = q;
     var t = price.innerHTML * quantity.innerHTML;
     total.innerHTML = parseFloat(t).toFixed(2);

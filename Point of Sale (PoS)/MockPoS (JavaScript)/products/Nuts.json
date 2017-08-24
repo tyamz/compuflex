@@ -1,0 +1,12 @@
+{
+	"items": [
+		{"name": "Macadamia", "price": 2.00},
+		{"name": "Hazelnut", "price": 1.90},
+		{"name": "Almond", "price": 1.31},
+		{"name": "Peanut", "price": 0.85},
+		{"name": "Walnut", "price": 1.12},
+		{"name": "Pistachio", "price": 1.53},
+		{"name": "Pecan", "price": 1.25},
+		{"name": "Brazil", "price": 1.75}
+	]
+}
